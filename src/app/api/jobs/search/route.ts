@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import { searchLocalJobs } from "@/lib/local-jobs";
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q");
@@ -8,20 +9,27 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ jobs: [] });
   }
 
-  const supabase = createServiceClient();
+  // Try Supabase first
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (supabaseUrl && !supabaseUrl.includes("placeholder")) {
+    try {
+      const supabase = createServiceClient();
+      const { data, error } = await supabase
+        .from("jobs")
+        .select("id, title, category, ai_risk_score, onet_code")
+        .or(`title.ilike.%${query}%`)
+        .order("ai_risk_score", { ascending: false })
+        .limit(20);
 
-  // Search by title and aliases using full-text search + ILIKE fallback
-  const { data, error } = await supabase
-    .from("jobs")
-    .select("id, title, category, ai_risk_score, onet_code")
-    .or(`title.ilike.%${query}%`)
-    .order("ai_risk_score", { ascending: false })
-    .limit(20);
-
-  if (error) {
-    console.error("Job search error:", error);
-    return NextResponse.json({ jobs: [] }, { status: 500 });
+      if (!error && data && data.length > 0) {
+        return NextResponse.json({ jobs: data });
+      }
+    } catch {
+      // Fall through to local search
+    }
   }
 
-  return NextResponse.json({ jobs: data || [] });
+  // Fallback: search local job data
+  const jobs = searchLocalJobs(query);
+  return NextResponse.json({ jobs });
 }
