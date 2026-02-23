@@ -269,16 +269,17 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { step: "01", title: t("howItWorks.step1"), desc: t("howItWorks.step1desc") },
-              { step: "02", title: t("howItWorks.step2"), desc: t("howItWorks.step2desc") },
-              { step: "03", title: t("howItWorks.step3"), desc: t("howItWorks.step3desc") },
+              { step: "01", title: t("howItWorks.step1"), desc: t("howItWorks.step1desc"), detail: t("howItWorks.step1detail") },
+              { step: "02", title: t("howItWorks.step2"), desc: t("howItWorks.step2desc"), detail: t("howItWorks.step2detail") },
+              { step: "03", title: t("howItWorks.step3"), desc: t("howItWorks.step3desc"), detail: t("howItWorks.step3detail") },
             ].map((item) => (
               <div key={item.step} className="text-center p-8">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center">
                   <span className="text-accent font-bold">{item.step}</span>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                <p className="text-sm text-muted">{item.desc}</p>
+                <p className="text-sm text-muted leading-relaxed">{item.desc}</p>
+                <p className="text-xs text-accent/70 font-medium mt-3">{item.detail}</p>
               </div>
             ))}
           </div>
@@ -291,12 +292,14 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-12">
             {t("features.heading")} <span className="gradient-text">{t("features.headingHighlight")}</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: "🎯", title: t("features.f1title"), desc: t("features.f1desc") },
-              { icon: "📊", title: t("features.f2title"), desc: t("features.f2desc") },
+              { icon: "📋", title: t("features.f2title"), desc: t("features.f2desc") },
               { icon: "🗺️", title: t("features.f3title"), desc: t("features.f3desc") },
-              { icon: "⚡", title: t("features.f4title"), desc: t("features.f4desc") },
+              { icon: "📈", title: t("features.f4title"), desc: t("features.f4desc") },
+              { icon: "🏛️", title: t("features.f5title"), desc: t("features.f5desc") },
+              { icon: "🔭", title: t("features.f6title"), desc: t("features.f6desc") },
             ].map((feature) => (
               <div key={feature.title} className="p-6 bg-card rounded-xl border border-border hover:border-accent/30 transition-all">
                 <span className="text-2xl">{feature.icon}</span>

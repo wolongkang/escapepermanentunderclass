@@ -299,18 +299,44 @@ export default function ReportContent({ report }: { report: Report }) {
           </section>
         )}
 
-        {/* CTA */}
-        <div className="text-center py-12 border-t border-border">
-          <h2 className="text-2xl font-bold mb-2">Ready to escape?</h2>
-          <p className="text-muted mb-6">
-            Join our community for ongoing AI career intelligence.
-          </p>
-          <a
-            href="/"
-            className="inline-block px-8 py-3 bg-accent hover:bg-accent-hover rounded-xl text-white font-semibold transition-colors"
-          >
-            Join the Community
-          </a>
+        {/* Discord Upsell */}
+        <div className="py-12 border-t border-border">
+          <div className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/30 rounded-2xl p-8 text-center">
+            <div className="text-3xl mb-3">🛡️</div>
+            <h2 className="text-2xl font-bold mb-2">Don&apos;t Navigate This Alone</h2>
+            <p className="text-lg text-muted mb-4 max-w-2xl mx-auto">
+              Join our private Discord community of professionals preparing for the AGI transition.
+              Weekly strategy sessions, real-time job market intelligence, skills workshops, and
+              a network of people who refuse to become part of the permanent underclass.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 max-w-xl mx-auto text-sm">
+              <div className="bg-card/60 rounded-lg p-3">
+                <div className="font-semibold">Weekly AMAs</div>
+                <div className="text-xs text-muted">AI career experts</div>
+              </div>
+              <div className="bg-card/60 rounded-lg p-3">
+                <div className="font-semibold">Job Alerts</div>
+                <div className="text-xs text-muted">AI-proof opportunities</div>
+              </div>
+              <div className="bg-card/60 rounded-lg p-3">
+                <div className="font-semibold">Skills Labs</div>
+                <div className="text-xs text-muted">Hands-on upskilling</div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <span className="text-3xl font-bold text-accent">$50</span>
+              <span className="text-muted">/month</span>
+            </div>
+            <a
+              href="https://discord.gg/escapepermanentunderclass"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-3 bg-accent hover:bg-accent-hover rounded-xl text-white font-semibold transition-colors"
+            >
+              Join the Escape Community
+            </a>
+            <p className="text-xs text-muted mt-3">Cancel anytime. Your report is yours forever regardless.</p>
+          </div>
         </div>
 
         {/* Footer */}
