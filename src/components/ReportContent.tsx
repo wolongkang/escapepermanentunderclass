@@ -40,6 +40,12 @@ interface Report {
     areas_of_focus?: string[];
     avoid?: string[];
   };
+  social_sentiment?: {
+    overall_mood?: string;
+    key_themes?: string[];
+    notable_quotes?: string[];
+    sentiment_summary?: string;
+  };
   industry_outlook: string;
   created_at: string;
   jobs: {
@@ -156,6 +162,62 @@ export default function ReportContent({ report }: { report: Report }) {
             ))}
           </div>
         </section>
+
+        {/* Social Sentiment */}
+        {report.social_sentiment && report.social_sentiment.overall_mood && (
+          <section className="mb-12">
+            <h2 className="text-2xl font-bold mb-4">Live Social Sentiment</h2>
+            <div className="bg-card rounded-2xl border border-border p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">
+                  {report.social_sentiment.overall_mood === "alarmed" ? "🔴" :
+                   report.social_sentiment.overall_mood === "concerned" ? "🟠" :
+                   report.social_sentiment.overall_mood === "mixed" ? "🟡" :
+                   report.social_sentiment.overall_mood === "cautiously_optimistic" ? "🟢" : "🔵"}
+                </span>
+                <div>
+                  <span className="font-semibold capitalize">
+                    {report.social_sentiment.overall_mood.replace(/_/g, " ")}
+                  </span>
+                  <p className="text-xs text-muted">Based on recent X and Reddit discussions</p>
+                </div>
+              </div>
+
+              {report.social_sentiment.sentiment_summary && (
+                <p className="text-sm text-muted leading-relaxed mb-4">
+                  {report.social_sentiment.sentiment_summary}
+                </p>
+              )}
+
+              {report.social_sentiment.key_themes && report.social_sentiment.key_themes.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-xs font-medium text-muted mb-2">Trending Themes</p>
+                  <div className="flex flex-wrap gap-2">
+                    {report.social_sentiment.key_themes.map((theme, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 text-xs bg-accent/10 text-accent rounded-full"
+                      >
+                        {theme}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {report.social_sentiment.notable_quotes && report.social_sentiment.notable_quotes.length > 0 && (
+                <div className="space-y-2">
+                  {report.social_sentiment.notable_quotes.map((quote, i) => (
+                    <div key={i} className="flex items-start gap-2 text-sm">
+                      <span className="text-muted shrink-0">&ldquo;</span>
+                      <p className="text-muted italic">{quote}&rdquo;</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Task Analysis */}
         {report.task_analysis && report.task_analysis.length > 0 && (

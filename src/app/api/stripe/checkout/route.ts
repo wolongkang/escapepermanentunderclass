@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { jobId, jobTitle, email } = await request.json();
+    const { jobId, jobTitle, email, age, country, yearsExperience } = await request.json();
 
     if (!jobId || !jobTitle || !email) {
       return NextResponse.json(
@@ -37,6 +37,9 @@ export async function POST(request: NextRequest) {
     params.append("metadata[jobId]", jobId);
     params.append("metadata[jobTitle]", jobTitle);
     params.append("metadata[email]", email);
+    if (age) params.append("metadata[age]", String(age));
+    if (country) params.append("metadata[country]", country);
+    if (yearsExperience) params.append("metadata[yearsExperience]", String(yearsExperience));
 
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",

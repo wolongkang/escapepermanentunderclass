@@ -38,6 +38,9 @@ function SuccessContent() {
                 jobId: data.jobId,
                 email: data.email,
                 paymentId: data.paymentId,
+                age: data.age,
+                country: data.country,
+                yearsExperience: data.yearsExperience,
               }),
             });
             setTimeout(checkReport, 2000);

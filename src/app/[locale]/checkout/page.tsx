@@ -4,12 +4,27 @@ import { useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
 import { useTranslations } from "next-intl";
 
+const COUNTRIES = [
+  "United States", "United Kingdom", "Canada", "Australia", "Germany",
+  "France", "India", "Japan", "Brazil", "Mexico", "Spain", "Italy",
+  "Netherlands", "Sweden", "Norway", "Denmark", "Finland", "Switzerland",
+  "Poland", "Russia", "South Korea", "China", "Singapore", "Philippines",
+  "Nigeria", "South Africa", "Argentina", "Colombia", "Chile", "Israel",
+  "United Arab Emirates", "Saudi Arabia", "Turkey", "Ireland", "New Zealand",
+  "Portugal", "Belgium", "Austria", "Czech Republic", "Romania", "Thailand",
+  "Vietnam", "Indonesia", "Malaysia", "Egypt", "Kenya", "Ghana", "Pakistan",
+  "Bangladesh", "Ukraine", "Greece", "Hungary",
+];
+
 function CheckoutContent() {
   const t = useTranslations("checkout");
   const searchParams = useSearchParams();
   const jobId = searchParams.get("job");
   const jobTitle = searchParams.get("title");
   const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [country, setCountry] = useState("");
+  const [yearsExperience, setYearsExperience] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,7 +39,14 @@ function CheckoutContent() {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobId, jobTitle, email }),
+        body: JSON.stringify({
+          jobId,
+          jobTitle,
+          email,
+          age: age ? parseInt(age) : undefined,
+          country: country || undefined,
+          yearsExperience: yearsExperience ? parseInt(yearsExperience) : undefined,
+        }),
       });
 
       const data = await res.json();
@@ -118,6 +140,60 @@ function CheckoutContent() {
               className="w-full px-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
             />
             <p className="text-xs text-muted mt-2">{t("emailHelper")}</p>
+          </div>
+
+          {/* Personalization Fields */}
+          <div className="bg-card/50 rounded-xl border border-accent/20 p-4 mb-4">
+            <p className="text-xs text-accent font-medium mb-3">{t("personalizeLabel")}</p>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label htmlFor="age" className="block text-xs text-muted mb-1">
+                  {t("ageLabel")}
+                </label>
+                <input
+                  id="age"
+                  type="number"
+                  min="16"
+                  max="80"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="e.g. 35"
+                  className="w-full px-3 py-2 text-sm bg-card border border-border rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
+                />
+              </div>
+              <div>
+                <label htmlFor="experience" className="block text-xs text-muted mb-1">
+                  {t("experienceLabel")}
+                </label>
+                <input
+                  id="experience"
+                  type="number"
+                  min="0"
+                  max="50"
+                  value={yearsExperience}
+                  onChange={(e) => setYearsExperience(e.target.value)}
+                  placeholder="e.g. 8"
+                  className="w-full px-3 py-2 text-sm bg-card border border-border rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
+                />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="country" className="block text-xs text-muted mb-1">
+                {t("countryLabel")}
+              </label>
+              <select
+                id="country"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="w-full px-3 py-2 text-sm bg-card border border-border rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
+              >
+                <option value="">{t("countryPlaceholder")}</option>
+                {COUNTRIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            <p className="text-xs text-muted/70 mt-2">{t("personalizeHelper")}</p>
           </div>
 
           {error && (

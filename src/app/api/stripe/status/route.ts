@@ -59,6 +59,9 @@ export async function GET(request: NextRequest) {
       jobId,
       email,
       paymentId: session.payment_intent,
+      age: session.metadata?.age ? parseInt(session.metadata.age) : undefined,
+      country: session.metadata?.country || undefined,
+      yearsExperience: session.metadata?.yearsExperience ? parseInt(session.metadata.yearsExperience) : undefined,
     });
   } catch (err) {
     console.error("Status check error:", err);
