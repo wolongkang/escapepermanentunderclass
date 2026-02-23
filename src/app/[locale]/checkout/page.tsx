@@ -1,19 +1,43 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { useTranslations } from "next-intl";
 
 const COUNTRIES = [
-  "United States", "United Kingdom", "Canada", "Australia", "Germany",
-  "France", "India", "Japan", "Brazil", "Mexico", "Spain", "Italy",
-  "Netherlands", "Sweden", "Norway", "Denmark", "Finland", "Switzerland",
-  "Poland", "Russia", "South Korea", "China", "Singapore", "Philippines",
-  "Nigeria", "South Africa", "Argentina", "Colombia", "Chile", "Israel",
-  "United Arab Emirates", "Saudi Arabia", "Turkey", "Ireland", "New Zealand",
-  "Portugal", "Belgium", "Austria", "Czech Republic", "Romania", "Thailand",
-  "Vietnam", "Indonesia", "Malaysia", "Egypt", "Kenya", "Ghana", "Pakistan",
-  "Bangladesh", "Ukraine", "Greece", "Hungary",
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda",
+  "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain",
+  "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+  "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
+  "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada",
+  "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros",
+  "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+  "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica",
+  "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador",
+  "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji",
+  "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece",
+  "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras",
+  "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
+  "Italy", "Ivory Coast", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
+  "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
+  "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+  "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+  "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova",
+  "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia",
+  "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria",
+  "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau",
+  "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines",
+  "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
+  "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
+  "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal",
+  "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+  "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan",
+  "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+  "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga",
+  "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda",
+  "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
+  "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen",
+  "Zambia", "Zimbabwe",
 ];
 
 function CheckoutContent() {
@@ -24,9 +48,27 @@ function CheckoutContent() {
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
   const [country, setCountry] = useState("");
+  const [countrySearch, setCountrySearch] = useState("");
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [yearsExperience, setYearsExperience] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const countryRef = useRef<HTMLDivElement>(null);
+
+  const filteredCountries = countrySearch
+    ? COUNTRIES.filter((c) => c.toLowerCase().includes(countrySearch.toLowerCase()))
+    : COUNTRIES;
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (countryRef.current && !countryRef.current.contains(e.target as Node)) {
+        setShowCountryDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -143,11 +185,14 @@ function CheckoutContent() {
           </div>
 
           {/* Personalization Fields */}
-          <div className="bg-card/50 rounded-xl border border-accent/20 p-4 mb-4">
-            <p className="text-xs text-accent font-medium mb-3">{t("personalizeLabel")}</p>
-            <div className="grid grid-cols-2 gap-3 mb-3">
+          <div className="bg-card rounded-2xl border-2 border-accent/30 p-6 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-lg">&#9889;</span>
+              <p className="text-base text-accent font-semibold">{t("personalizeLabel")}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <label htmlFor="age" className="block text-xs text-muted mb-1">
+                <label htmlFor="age" className="block text-sm font-medium text-muted mb-2">
                   {t("ageLabel")}
                 </label>
                 <input
@@ -158,11 +203,11 @@ function CheckoutContent() {
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                   placeholder="e.g. 35"
-                  className="w-full px-3 py-2 text-sm bg-card border border-border rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
+                  className="w-full px-4 py-3 text-base bg-card border border-border rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
                 />
               </div>
               <div>
-                <label htmlFor="experience" className="block text-xs text-muted mb-1">
+                <label htmlFor="experience" className="block text-sm font-medium text-muted mb-2">
                   {t("experienceLabel")}
                 </label>
                 <input
@@ -173,27 +218,70 @@ function CheckoutContent() {
                   value={yearsExperience}
                   onChange={(e) => setYearsExperience(e.target.value)}
                   placeholder="e.g. 8"
-                  className="w-full px-3 py-2 text-sm bg-card border border-border rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
+                  className="w-full px-4 py-3 text-base bg-card border border-border rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
                 />
               </div>
             </div>
-            <div>
-              <label htmlFor="country" className="block text-xs text-muted mb-1">
+            <div ref={countryRef} className="relative">
+              <label htmlFor="countrySearch" className="block text-sm font-medium text-muted mb-2">
                 {t("countryLabel")}
               </label>
-              <select
-                id="country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-card border border-border rounded-lg focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
-              >
-                <option value="">{t("countryPlaceholder")}</option>
-                {COUNTRIES.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
+              <input
+                id="countrySearch"
+                type="text"
+                value={showCountryDropdown ? countrySearch : country || countrySearch}
+                onChange={(e) => {
+                  setCountrySearch(e.target.value);
+                  setCountry("");
+                  setShowCountryDropdown(true);
+                }}
+                onFocus={() => {
+                  setShowCountryDropdown(true);
+                  if (country) {
+                    setCountrySearch(country);
+                    setCountry("");
+                  }
+                }}
+                placeholder={t("countryPlaceholder")}
+                autoComplete="off"
+                className="w-full px-4 py-3 text-base bg-card border border-border rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
+              />
+              {country && !showCountryDropdown && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCountry("");
+                    setCountrySearch("");
+                  }}
+                  className="absolute right-3 top-[38px] text-muted hover:text-foreground transition-colors"
+                >
+                  &#10005;
+                </button>
+              )}
+              {showCountryDropdown && (
+                <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                  {filteredCountries.length === 0 ? (
+                    <div className="px-4 py-3 text-sm text-muted">No countries found</div>
+                  ) : (
+                    filteredCountries.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => {
+                          setCountry(c);
+                          setCountrySearch("");
+                          setShowCountryDropdown(false);
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-accent/10 hover:text-accent transition-colors first:rounded-t-xl last:rounded-b-xl"
+                      >
+                        {c}
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
-            <p className="text-xs text-muted/70 mt-2">{t("personalizeHelper")}</p>
+            <p className="text-xs text-muted/70 mt-3">{t("personalizeHelper")}</p>
           </div>
 
           {error && (
