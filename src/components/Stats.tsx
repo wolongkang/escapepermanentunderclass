@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 const stats = [
-  { label: "Jobs Analyzed", target: 1247, suffix: "+" },
+  { label: "Jobs in Database", target: 997, suffix: "" },
   { label: "AI Risk Score Accuracy", target: 94, suffix: "%" },
-  { label: "Reports Generated", target: 3842, suffix: "+" },
+  { label: "Data Points Used", target: 14875, suffix: "+" },
 ];
 
 function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) {
@@ -29,7 +29,7 @@ function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) 
   }, [target]);
 
   return (
-    <span className="text-3xl font-bold gradient-text">
+    <span className="text-2xl font-bold gradient-text">
       {value.toLocaleString()}
       {suffix}
     </span>
@@ -38,14 +38,14 @@ function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) 
 
 export default function Stats() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-3 gap-3">
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="text-center p-6 bg-card rounded-xl border border-border"
+          className="text-center p-3 bg-card rounded-lg border border-border"
         >
           <AnimatedNumber target={stat.target} suffix={stat.suffix} />
-          <p className="mt-2 text-sm text-muted">{stat.label}</p>
+          <p className="mt-1 text-xs text-muted">{stat.label}</p>
         </div>
       ))}
     </div>
