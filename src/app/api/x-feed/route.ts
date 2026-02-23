@@ -160,7 +160,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@ai_insider",
       timestamp: "1h ago",
       topic: "AI",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "2",
@@ -169,7 +169,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@futureofwork",
       timestamp: "2h ago",
       topic: "Jobs",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "3",
@@ -178,7 +178,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@computetracker",
       timestamp: "3h ago",
       topic: "Compute",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "4",
@@ -187,7 +187,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@techdisrupt",
       timestamp: "4h ago",
       topic: "Automation",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "5",
@@ -196,7 +196,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@agiwatch",
       timestamp: "5h ago",
       topic: "AGI",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "6",
@@ -205,7 +205,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@financeai",
       timestamp: "6h ago",
       topic: "Jobs",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "7",
@@ -214,7 +214,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@deeptech_daily",
       timestamp: "7h ago",
       topic: "AI",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
     {
       id: "8",
@@ -223,7 +223,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@laborecon",
       timestamp: "8h ago",
       topic: "Automation",
-      url: "#",
+      url: "https://x.com/search?q=AI+automation+jobs&f=live",
     },
   ];
 }
