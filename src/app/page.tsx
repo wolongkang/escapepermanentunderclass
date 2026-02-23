@@ -1,6 +1,7 @@
 import JobSearch from "@/components/JobSearch";
 import RiskMeter from "@/components/RiskMeter";
 import Stats from "@/components/Stats";
+import XFeed from "@/components/XFeed";
 
 const features = [
   {
@@ -37,6 +38,15 @@ const sampleInsights = [
   { job: "Truck Driver", score: 6.9, trend: "up", label: "Elevated Risk" },
 ];
 
+const dataSources = [
+  { name: "U.S. Dept. of Labor O*NET", detail: "997 occupations", icon: "🏛️" },
+  { name: "Bureau of Labor Statistics", detail: "Employment & wages", icon: "📈" },
+  { name: "BLS Employment Projections", detail: "10-year forecasts", icon: "🔮" },
+  { name: "World Economic Forum", detail: "Future of Jobs Report", icon: "🌍" },
+  { name: "McKinsey Global Institute", detail: "AI automation research", icon: "📋" },
+  { name: "OECD Employment Outlook", detail: "G20 labor analysis", icon: "🌐" },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
@@ -68,15 +78,16 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
+      {/* Hero - 3 column: Text | Risk Meter | X Feed */}
+      <section className="pt-32 pb-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left - Copy */}
+            <div className="lg:col-span-4 pt-4">
               <div className="inline-block px-4 py-1.5 bg-accent/10 border border-accent/20 rounded-full text-accent text-sm font-medium mb-6">
                 AI is coming for white-collar jobs
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
                 Will AI{" "}
                 <span className="gradient-text">replace</span>
                 <br />
@@ -91,10 +102,36 @@ export default function Home() {
                 <Stats />
               </div>
             </div>
-            <div className="flex justify-center">
+
+            {/* Center - Risk Meter */}
+            <div className="lg:col-span-4 flex justify-center">
               <RiskMeter />
             </div>
+
+            {/* Right - X Feed */}
+            <div className="lg:col-span-4">
+              <XFeed />
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* Urgency Quote Banner */}
+      <section className="py-10 px-6 border-y border-border bg-card/30">
+        <div className="max-w-4xl mx-auto text-center">
+          <blockquote className="text-lg sm:text-xl italic text-muted leading-relaxed">
+            &ldquo;Labor&apos;s share of GDP declined from 64% in 1974 to 56% in 2024&hellip;
+            then dropped to 46%.&rdquo;
+          </blockquote>
+          <p className="mt-3 text-sm text-accent font-medium">
+            &mdash; Citrini Research, &ldquo;2028&rdquo; Scenario Analysis
+          </p>
+          <p className="mt-4 text-xs text-muted max-w-2xl mx-auto">
+            The research paints a picture where AI-driven displacement creates interconnected
+            economic crises through job loss, wage compression, and financial system stress.
+            White-collar layoffs increase as AI capabilities improve. The question isn&apos;t
+            if &mdash; it&apos;s when.
+          </p>
         </div>
       </section>
 
@@ -105,15 +142,82 @@ export default function Home() {
             Find your <span className="gradient-text">risk score</span>
           </h2>
           <p className="text-muted mb-10 max-w-md mx-auto">
-            Search for your job title below. We cover 1,200+ occupations across every
-            industry.
+            Search from 997 occupations across every industry in the U.S. economy.
           </p>
           <JobSearch />
         </div>
       </section>
 
-      {/* Sample Scores */}
+      {/* Data Credibility Section */}
       <section className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
+              Powered by <span className="gradient-text">real data</span>
+            </h2>
+            <p className="text-muted max-w-lg mx-auto">
+              Our scoring model analyzes 12,900+ data points across 6 risk dimensions
+              for every occupation in the U.S. Department of Labor database.
+            </p>
+          </div>
+
+          {/* Data points counter row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div className="text-center p-5 bg-card rounded-xl border border-border">
+              <div className="text-3xl font-bold text-accent">997</div>
+              <div className="text-xs text-muted mt-1">Occupations Covered</div>
+            </div>
+            <div className="text-center p-5 bg-card rounded-xl border border-border">
+              <div className="text-3xl font-bold text-accent">12,961</div>
+              <div className="text-xs text-muted mt-1">Base Data Points</div>
+            </div>
+            <div className="text-center p-5 bg-card rounded-xl border border-border">
+              <div className="text-3xl font-bold text-accent">6</div>
+              <div className="text-xs text-muted mt-1">Risk Dimensions</div>
+            </div>
+            <div className="text-center p-5 bg-card rounded-xl border border-border">
+              <div className="text-3xl font-bold text-accent">50+</div>
+              <div className="text-xs text-muted mt-1">Analysis Points Per Report</div>
+            </div>
+          </div>
+
+          {/* 6 Risk Dimensions */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-12">
+            {[
+              { label: "Task Automation", desc: "How automatable are core job tasks", color: "text-red-400" },
+              { label: "Cognitive Exposure", desc: "AI's ability to handle analytical work", color: "text-orange-400" },
+              { label: "Physical Requirement", desc: "Hands-on work that protects from AI", color: "text-green-400" },
+              { label: "Creativity Score", desc: "Creative & innovative thinking needs", color: "text-blue-400" },
+              { label: "Social Intelligence", desc: "Interpersonal & emotional labor", color: "text-purple-400" },
+              { label: "Regulatory Barriers", desc: "Licensing & legal protections", color: "text-cyan-400" },
+            ].map((dim) => (
+              <div key={dim.label} className="p-4 bg-card/60 rounded-lg border border-border/50">
+                <div className={`text-sm font-semibold ${dim.color}`}>{dim.label}</div>
+                <div className="text-xs text-muted mt-1">{dim.desc}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Data Sources */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {dataSources.map((source) => (
+              <div
+                key={source.name}
+                className="flex items-start gap-3 p-4 bg-card rounded-xl border border-border"
+              >
+                <span className="text-xl shrink-0">{source.icon}</span>
+                <div>
+                  <div className="text-sm font-medium">{source.name}</div>
+                  <div className="text-xs text-muted">{source.detail}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sample Scores */}
+      <section className="py-20 px-6 bg-card/50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">
             Sample <span className="gradient-text">Risk Scores</span>
@@ -163,6 +267,39 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Second Quote - Urgency */}
+      <section className="py-12 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 bg-card rounded-xl border border-danger/20">
+              <div className="text-danger text-xs font-semibold uppercase tracking-wider mb-3">
+                The Threat
+              </div>
+              <p className="text-sm text-muted leading-relaxed">
+                &ldquo;AI capabilities improved, companies needed fewer workers,
+                white collar layoffs increased.&rdquo;
+              </p>
+              <p className="mt-2 text-xs text-muted/60">
+                &mdash; Citrini Research Scenario Analysis
+              </p>
+            </div>
+            <div className="p-6 bg-card rounded-xl border border-accent/20">
+              <div className="text-accent text-xs font-semibold uppercase tracking-wider mb-3">
+                The Scale
+              </div>
+              <p className="text-sm text-muted leading-relaxed">
+                McKinsey estimates 30% of work hours could be automated by 2030.
+                That&apos;s 12 million occupational transitions in the US alone.
+                The window to prepare is closing.
+              </p>
+              <p className="mt-2 text-xs text-muted/60">
+                &mdash; McKinsey Global Institute
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-6 bg-card/50">
         <div className="max-w-6xl mx-auto">
@@ -174,17 +311,17 @@ export default function Home() {
               {
                 step: "01",
                 title: "Enter Your Job",
-                desc: "Search from 1,200+ occupations in our comprehensive database.",
+                desc: "Search from 997 occupations in our comprehensive O*NET database.",
               },
               {
                 step: "02",
                 title: "Get Your Score",
-                desc: "Our AI analyzes your role against 50+ automation risk factors.",
+                desc: "Our AI analyzes your role across 6 risk dimensions and 50+ automation factors.",
               },
               {
                 step: "03",
                 title: "Build Your Plan",
-                desc: "Receive a personalized career pivot strategy and asset guide.",
+                desc: "Receive a personalized career pivot strategy and asset positioning guide.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center p-8">
@@ -239,6 +376,7 @@ export default function Home() {
             <ul className="text-left space-y-3 mb-8">
               {[
                 "Personalized AI risk score (1-10)",
+                "6-dimension risk breakdown",
                 "Detailed task-by-task automation analysis",
                 "Career pivot roadmap with timelines",
                 "Skills development priorities",
