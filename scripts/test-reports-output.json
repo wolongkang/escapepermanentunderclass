@@ -1,0 +1,475 @@
+[
+  {
+    "job": "Firefighters",
+    "category": "Protective Service",
+    "risk_score": 2.1,
+    "input_tokens": 621,
+    "output_tokens": 3709,
+    "report": {
+      "executive_summary": "Firefighting represents one of the most AI-resistant careers in the labor market, with a risk score of just 2.1/10. The role's high physical demands (9/10), substantial social intelligence requirements (7/10), and strong regulatory protections (8/10) create substantial barriers to AI displacement. The core competencies—navigating dangerous environments, making split-second life-or-death decisions, performing rescue operations requiring dexterity and problem-solving in unpredictable conditions—remain firmly in the domain of human capability for the foreseeable future. Near-term (1-3 years): Minimal displacement risk; AI tools may enhance administrative tasks and response coordination. Medium-term (3-7 years): AI will augment firefighting through predictive analytics, equipment optimization, and training simulations, but won't replace personnel. Long-term (7-15 years): Even with advanced robotics, human firefighters will remain essential for complex rescue operations, community leadership, and situations requiring adaptive judgment. The primary career risk is not obsolescence but rather the slow 4% employment growth, which may create modest competition for advancement and new positions.",
+      "task_analysis": [
+        {
+          "task": "Responding to emergency calls and navigating to incident locations",
+          "automation_risk": "low",
+          "timeline": "15+ years",
+          "explanation": "While GPS and routing optimization can assist, the decision-making about approach routes given real-time hazards, traffic conditions, and situational awareness requires human judgment. Dispatchers may use AI for routing suggestions, but drivers must remain in control."
+        },
+        {
+          "task": "Entering burning buildings and searching for victims",
+          "automation_risk": "low",
+          "timeline": "20+ years",
+          "explanation": "This is the core firefighting task requiring physical presence in extreme danger. While robotic drones may assist in reconnaissance, the physical rescue of people requires human empathy, judgment, and adaptability that far exceeds current and near-future AI/robotics capabilities."
+        },
+        {
+          "task": "Assessing fire conditions and determining tactical response",
+          "automation_risk": "medium",
+          "timeline": "8-12 years",
+          "explanation": "AI can improve fire behavior prediction and hazard detection through thermal imaging analysis and sensor data integration. However, real-time tactical decisions about resource deployment, personnel safety, and changing conditions still require experienced human judgment."
+        },
+        {
+          "task": "Operating specialized firefighting equipment (pumps, ladders, ventilation)",
+          "automation_risk": "low",
+          "timeline": "12+ years",
+          "explanation": "While some equipment functions could theoretically be automated, the requirement for rapid adjustment to changing conditions and coordination with team members in high-stress environments keeps this firmly human-dependent."
+        },
+        {
+          "task": "Conducting rescue operations on heights or in confined spaces",
+          "automation_risk": "low",
+          "timeline": "20+ years",
+          "explanation": "Rescue operations demand real-time improvisation, physical strength, and the ability to calm and physically assist panicked individuals. The variability of each rescue scenario makes automation impractical."
+        },
+        {
+          "task": "Providing emergency medical aid and first response care",
+          "automation_risk": "low",
+          "timeline": "10+ years",
+          "explanation": "While diagnostic AI tools may improve treatment recommendations, the physical provision of emergency medical care—CPR, stabilization, patient transport—requires human presence and compassion. AI can inform but not replace this function."
+        },
+        {
+          "task": "Conducting community fire prevention and public education",
+          "automation_risk": "medium",
+          "timeline": "5-8 years",
+          "explanation": "AI-powered content and personalized education modules could reduce some educational tasks. However, community relationship-building, school visits, and persuasive communication require human firefighters for authenticity and local trust-building."
+        },
+        {
+          "task": "Inspecting buildings for fire code compliance",
+          "automation_risk": "medium",
+          "timeline": "7-10 years",
+          "explanation": "Computer vision and automated inspections could flag obvious violations. However, judgment calls about code interpretation, context-specific exemptions, and communicating findings to building managers still require experienced humans."
+        },
+        {
+          "task": "Training new firefighters and mentoring personnel",
+          "automation_risk": "low",
+          "timeline": "12+ years",
+          "explanation": "While AI can provide training simulations and knowledge delivery, the mentorship, behavioral coaching, and leadership development aspects require human-to-human interaction and role modeling."
+        },
+        {
+          "task": "Preparing incident reports and documentation",
+          "automation_risk": "high",
+          "timeline": "2-4 years",
+          "explanation": "AI can automate report generation from structured data, voice-to-text conversion, and template population. This administrative task is highly susceptible to automation without impacting core firefighting."
+        },
+        {
+          "task": "Monitoring equipment and maintaining readiness",
+          "automation_risk": "medium",
+          "timeline": "5-7 years",
+          "explanation": "IoT sensors and predictive maintenance AI can flag equipment needing service. However, physical maintenance tasks and judgment about equipment readiness still require human technicians."
+        },
+        {
+          "task": "Coordinating with other emergency services at incident scenes",
+          "automation_risk": "low",
+          "timeline": "10+ years",
+          "explanation": "Multi-agency coordination in chaotic emergency environments requires real-time communication, relationship trust, and adaptive decision-making. AI can improve information sharing but not replace coordination leadership."
+        }
+      ],
+      "career_pivot_plan": {
+        "immediate_actions": [
+          "Develop expertise in fire department management and incident command systems—pursue Incident Commander (IC) certification and advanced management training to position for supervisory roles that increasingly oversee AI-assisted operations",
+          "Learn data interpretation and analytics basics specific to fire service—understand how to work with predictive analytics tools for dispatch optimization, resource allocation, and risk assessment",
+          "Build public speaking and community engagement skills—as automation handles routine tasks, firefighters who excel at community relations, training delivery, and public education will be more valuable",
+          "Obtain specialized certifications in high-value niches—hazmat response, technical rescue, or fire investigation credentials create advancement paths and resilience against employment stagnation",
+          "Monitor AI tool adoption in your department—gain hands-on familiarity with any AI-powered dispatch systems, thermal imaging analysis tools, or training simulations being implemented"
+        ],
+        "adjacent_roles": [
+          {
+            "title": "Fire Marshal / Fire Inspector",
+            "why_safer": "Regulatory protection remains strong; code enforcement is legally mandated human responsibility. Role emphasizes judgment and communication over physical tasks. Growth potential as departments need more inspectors for compliance.",
+            "transition_difficulty": 3
+          },
+          {
+            "title": "Emergency Management Director",
+            "why_safer": "Strategic planning and inter-agency coordination in emergencies cannot be automated. Requires deep understanding of emergency response but transitions to administrative leadership. Growing role as communities face climate-related disasters.",
+            "transition_difficulty": 4
+          },
+          {
+            "title": "Fire Service Training Officer",
+            "why_safer": "Teaching and curriculum development remain human-centric roles. Demand for training increases as departments adopt new technologies. Mentorship and behavioral coaching are irreplaceable.",
+            "transition_difficulty": 2
+          },
+          {
+            "title": "Search and Rescue Coordinator",
+            "why_safer": "Technical rescue expertise is highly specialized and demand is growing due to climate events. Coordination and judgment-heavy role. AI enhances but doesn't replace this function.",
+            "transition_difficulty": 3
+          },
+          {
+            "title": "Fire Safety Engineer",
+            "why_safer": "Combines firefighting knowledge with engineering and technical expertise. High earning potential, immune to displacement, and growing field as building codes evolve and climate risks increase.",
+            "transition_difficulty": 4
+          }
+        ],
+        "upskilling_path": [
+          {
+            "skill": "Data literacy and analytics interpretation",
+            "importance": 8,
+            "resources": "Online courses: Coursera 'Data Analysis for Public Safety,' NFPA data analytics webinars, department-internal training on dispatch/response analytics dashboards"
+          },
+          {
+            "skill": "Incident command system advancement and multi-agency coordination",
+            "importance": 9,
+            "resources": "FEMA ICS training program, state fire academy advanced command courses, NIMS certification levels 3-4"
+          },
+          {
+            "skill": "Public communication and community engagement",
+            "importance": 7,
+            "resources": "Toastmasters International, National Fire Academy public information officer (PIO) course, social media training for emergency services"
+          },
+          {
+            "skill": "Technical rescue specialization (HAZMAT, confined space, high-angle)",
+            "importance": 8,
+            "resources": "RESCUER.net courses, CMMC technical rescue certifications, manufacturer-specific training programs"
+          },
+          {
+            "skill": "Fire investigation and forensics",
+            "importance": 6,
+            "resources": "International Association of Fire Chiefs (IAFC) fire investigation program, National Fire Academy investigations course, state certifications"
+          }
+        ]
+      },
+      "skills_roadmap": {
+        "current_strengths": [
+          "Physical fitness and endurance—essential for all emergency response work",
+          "Crisis decision-making under pressure—invaluable in any emergency-adjacent field",
+          "Team coordination and communication in high-stakes situations—translates to leadership roles",
+          "Problem-solving with limited resources—relevant to engineering, management, and technical roles",
+          "Public trust and credibility—firefighters enjoy high community esteem, valuable for any public-facing role",
+          "Technical equipment operation and maintenance—foundational for specialized technical roles"
+        ],
+        "skills_to_develop": [
+          "Advanced incident command and strategic planning",
+          "Data interpretation and performance metrics analysis",
+          "Public speaking and media relations",
+          "Project management and budgeting",
+          "Technical writing and report analysis",
+          "Mentoring and adult education pedagogy",
+          "GIS and mapping technology literacy",
+          "Risk assessment and predictive analysis methodologies"
+        ],
+        "timeline": {
+          "month_1": "Enroll in Incident Commander Level 3 certification program; begin Coursera data literacy course; identify one public speaking opportunity (Toastmasters group meeting or department presentation)",
+          "month_2": "Complete IC-3 coursework; finish first data literacy module; attend first Toastmasters meeting; research one specialized certification aligned with career interests",
+          "month_3": "Take IC-3 exam; begin second data literacy course on analytics; deliver first prepared speech at Toastmasters; enroll in chosen specialty certification program",
+          "month_4": "Pursue IC-2 certification start; continue analytics coursework; advance through Toastmasters (aim for leadership role); complete half of specialty certification",
+          "month_5": "Complete IC-2; finish analytics coursework; take specialty certification exam; identify internal mentee for leadership development practice",
+          "month_6": "Begin advanced leadership or specialized technical course; reflect on progress and identify next learning priority; formally document new certifications and skills acquired; adjust career plan based on feedback from supervisors and peers"
+        }
+      },
+      "skills_roadmap_adjacent": {
+        "current_strengths": "See above section",
+        "skills_to_develop": "See above section",
+        "timeline": "See above section"
+      },
+      "asset_guidance": {
+        "general_principles": [
+          "Prioritize human-centric skills that AI cannot replicate—leadership, mentorship, community relationship-building, and ethical decision-making in ambiguous situations will only increase in value as routine tasks automate",
+          "Build expertise depth in specialized domains where demand exceeds supply—technical rescue, fire investigation, hazmat response, and fire service management are niches where expertise creates both career security and compensation premium",
+          "Maintain optionality by developing skills transferable beyond firefighting—management, data interpretation, technical writing, and public communication skills create fallback career paths if fire service employment stagnates",
+          "Invest in credentials that create licensing and regulatory moats—certifications that are legally required or industry-standard create barriers to outsourcing and automation"
+        ],
+        "areas_of_focus": [
+          "Emergency management and disaster response—climate change and disaster frequency are driving employment growth; public sector roles in this space have strong regulatory protection",
+          "Fire service technology and tool adoption—understanding how to work effectively with AI-powered dispatch, thermal imaging, and predictive analytics will position you as a valuable bridge between technology and operations",
+          "Leadership and management development—as technical firefighting becomes partially automated, organizational leadership roles will be where advancement and premium compensation concentrate",
+          "Specialized technical roles—engineering, inspection, investigation, and training roles have higher earning potential and stronger growth trajectories than line firefighting",
+          "Public sector resilience—government employment has stronger regulatory protection against job displacement than private sector equivalents"
+        ],
+        "avoid": [
+          "Assuming your current role is future-proof—while firefighting itself remains secure, employment growth is modest at 4%; without upskilling, advancement opportunities may be limited",
+          "Neglecting administrative and analytical competencies—departments increasingly use data-driven resource allocation; those who can interpret and work with this data will have competitive advantage",
+          "Specializing too narrowly in physical-only firefighting—without developing leadership, technical, or specialized expertise, you may plateau in career advancement and compensation",
+          "Ignoring technology adoption—departments deploying AI and analytics tools will need personnel who understand these systems; resistance to new tools limits career mobility",
+          "Overlooking the importance of communication skills—as routine tasks automate, the ability to educate the public, communicate with media, and coordinate with other agencies becomes relatively more valuable",
+          "Failing to prepare for slow employment growth—with only 4% projected growth, the fire service job market may become more competitive; credentials and specializations become differentiators"
+        ]
+      },
+      "industry_outlook": "The fire service industry will experience a gradual transformation over the next decade driven by AI-assisted operational efficiency rather than workforce displacement. Departments will increasingly adopt predictive analytics for resource allocation, IoT sensors for equipment monitoring, computer vision for rapid damage assessment, and advanced dispatch systems that AI optimizes for response time. However, these technologies will augment rather than replace firefighters. The 4% employment growth reflects both stable demand (emergency services cannot be cut during budget pressures) and efficiency gains from technology. More significant changes will emerge in job composition: line firefighting positions may grow slower than management, technical, and specialized roles. Departments will prioritize hiring personnel who can manage AI tools, interpret data, conduct community education (as prevention becomes increasingly data-driven), and handle complex technical rescues. The role of the firefighter will shift from routine responder to skilled emergency specialist, crisis manager, and community leader.\n\nClimate change and urban complexity will drive demand for specialized expertise in wildfire response, urban search and rescue, and hazmat situations—areas where human judgment and physical presence remain irreplaceable. Fire departments in growth regions and climate-vulnerable areas will expand technical capabilities. Simultaneously, automation of administrative work (reporting, scheduling, maintenance tracking) will free firefighters for higher-value activities like training, mentoring, and community engagement. The firefighters who thrive in this environment will be those who embrace continuous learning, develop leadership capabilities, pursue specialized credentials, and see themselves as evolving from uniform-wearing responders to emergency management professionals. Career advancement will increasingly depend on supplementing firefighting credentials with management training, data literacy, and specialized technical expertise rather than simply gaining seniority."
+    },
+    "analysis": {
+      "metrics": {
+        "summary_word_count": 152,
+        "task_count": 12,
+        "risk_distribution": {
+          "high": 1,
+          "medium": 4,
+          "low": 7
+        },
+        "immediate_actions_count": 5,
+        "adjacent_roles_count": 5,
+        "upskilling_count": 5,
+        "has_current_strengths": true,
+        "has_skills_to_develop": true,
+        "has_timeline": true,
+        "principles_count": 4,
+        "focus_areas_count": 5,
+        "avoid_count": 6,
+        "outlook_word_count": 263,
+        "total_chars": 16587,
+        "issue_count": 1
+      },
+      "issues": [
+        "WARNING: Asset guidance may contain specific investment advice"
+      ]
+    }
+  },
+  {
+    "job": "Compensation, Benefits, and Job Analysis Specialists",
+    "category": "Finance & Accounting",
+    "risk_score": 7.4,
+    "input_tokens": 635,
+    "output_tokens": 4000,
+    "report": {
+      "executive_summary": "Compensation, Benefits, and Job Analysis Specialists face substantial AI displacement risk with a score of 7.4/10, placing this role in the high-risk category. The primary vulnerability stems from the highly analytical and data-driven nature of compensation benchmarking, benefits analysis, and job classification tasks—areas where AI excels. Within the near-term (1-3 years), AI tools will likely automate 40-50% of routine tasks including salary benchmarking, benefits cost analysis, and job description standardization. The medium-term outlook (3-7 years) shows potential displacement of mid-level analytical work as generative AI becomes sophisticated enough to handle complex compensation modeling and regulatory compliance documentation. However, this role retains resilience in areas requiring interpersonal negotiation, strategic organizational change management, and nuanced judgment about company culture fit—tasks scoring only 4.5/10 on social intelligence requirements but remaining difficult to fully automate. The 6% projected employment growth through 2034 provides limited buffer, suggesting that while demand won't evaporate, it will plateau or decline relative to automation adoption rates. Professionals in this field should expect significant role transformation rather than elimination, with future positions focusing on AI oversight, strategic compensation philosophy, and change leadership rather than technical execution.",
+      "task_analysis": [
+        {
+          "task": "Salary benchmarking and market analysis",
+          "automation_risk": "high",
+          "timeline": "1-2 years",
+          "explanation": "AI can rapidly ingest market data from multiple sources, adjust for geography and industry, and generate benchmark reports. This is largely a data aggregation and statistical task with minimal judgment required. Tools are already partially automating this work."
+        },
+        {
+          "task": "Benefits cost analysis and projection modeling",
+          "automation_risk": "high",
+          "timeline": "2-3 years",
+          "explanation": "Predictive analytics and AI modeling can forecast benefit utilization, cost trends, and ROI analysis faster and often more accurately than human analysis. The work is quantitative and pattern-based, ideal for machine learning."
+        },
+        {
+          "task": "Job analysis and job description creation",
+          "automation_risk": "high",
+          "timeline": "2-3 years",
+          "explanation": "AI can extract job requirements from historical data, industry standards, and role comparisons to generate standardized job descriptions. While some customization is needed, the core analytical work is automatable."
+        },
+        {
+          "task": "Compensation survey administration and data collection",
+          "automation_risk": "medium",
+          "timeline": "2-4 years",
+          "explanation": "Data collection and entry can be partially automated, but relationships with survey participants and interpretation of nuanced responses still requires human touch. The trend is toward online self-service, reducing specialist involvement."
+        },
+        {
+          "task": "Regulatory compliance documentation and analysis",
+          "automation_risk": "medium",
+          "timeline": "3-5 years",
+          "explanation": "AI can monitor regulatory changes and flag compliance issues, but interpreting how regulations apply to specific organizational contexts and making judgment calls on compliance strategies requires legal and business acumen. This is partially automatable but not fully."
+        },
+        {
+          "task": "Pay equity audits and gap analysis",
+          "automation_risk": "medium",
+          "timeline": "2-4 years",
+          "explanation": "Pattern detection in compensation data is straightforward for AI, but determining root causes of gaps and recommending solutions requires contextual business judgment and sensitivity to organizational dynamics."
+        },
+        {
+          "task": "Compensation strategy and policy development",
+          "automation_risk": "low",
+          "timeline": "7-10 years",
+          "explanation": "This requires understanding organizational culture, business strategy, talent market positioning, and leadership philosophy. AI can provide analysis to inform strategy but cannot replace the strategic judgment and change management aspects."
+        },
+        {
+          "task": "Change management and stakeholder communication",
+          "automation_risk": "low",
+          "timeline": "8-12 years",
+          "explanation": "Communicating compensation changes, managing employee concerns, and navigating organizational politics requires emotional intelligence, persuasion, and real-time adaptation. These soft skills remain highly resilient to automation."
+        },
+        {
+          "task": "Employee benefits counseling and support",
+          "automation_risk": "medium",
+          "timeline": "4-6 years",
+          "explanation": "Chatbots and AI can handle routine questions, but complex individual situations, empathetic counseling, and personalized guidance still benefit from human specialists. Partial automation is likely, but not complete replacement."
+        },
+        {
+          "task": "Competitive intelligence and talent market analysis",
+          "automation_risk": "medium",
+          "timeline": "2-4 years",
+          "explanation": "AI can gather and synthesize competitive data efficiently, but drawing strategic insights about talent positioning and market trends requires human interpretation and business acumen."
+        },
+        {
+          "task": "Job evaluation and grade/level assignment",
+          "automation_risk": "medium",
+          "timeline": "3-5 years",
+          "explanation": "AI can apply consistent evaluation criteria to standardized roles, but complex roles, boundary cases, and decisions involving organizational strategy and culture fit still require human judgment."
+        },
+        {
+          "task": "Executive and specialized compensation planning",
+          "automation_risk": "low",
+          "timeline": "8-15 years",
+          "explanation": "Designing compensation packages for executives, handling negotiations, and aligning with long-term incentive structures require deep business strategy understanding, negotiation skills, and judgment that remain difficult to automate."
+        }
+      ],
+      "career_pivot_plan": {
+        "immediate_actions": [
+          "Begin learning AI fundamentals and how machine learning/LLMs work—understand what these tools can and cannot do in compensation and HR contexts so you can position yourself as an AI-literate specialist rather than someone being replaced by AI",
+          "Develop expertise in compensation strategy and organizational change management by seeking stretch assignments that move you from tactical analysis to strategic advisory roles within your current organization",
+          "Build proficiency with HR analytics platforms, SQL, and basic data visualization tools (Tableau, Power BI) to become the bridge between AI outputs and business decision-making",
+          "Network intentionally with HR leaders, organizational development specialists, and compensation consultants to understand where the field is heading and identify opportunities in consulting or strategic advisory roles",
+          "Earn a credential in organizational psychology, change management, or HR business partnership (e.g., SHRM CIPHR, CIPD) to strengthen credentials in non-automatable areas"
+        ],
+        "adjacent_roles": [
+          {
+            "title": "Compensation & Benefits Consultant",
+            "why_safer": "Shifts from internal execution to advisory and strategy work, requiring judgment, client relationship management, and customized recommendations—higher value-add work that AI augments rather than replaces",
+            "transition_difficulty": 2
+          },
+          {
+            "title": "Organizational Development Specialist",
+            "why_safer": "Focuses on change management, culture, leadership development, and organizational effectiveness—areas requiring emotional intelligence and strategic thinking that are more resistant to automation",
+            "transition_difficulty": 3
+          },
+          {
+            "title": "HR Analytics Manager",
+            "why_safer": "Emphasizes data interpretation, predictive analytics, and strategic insights rather than tactical execution. Professionals who learn to work with AI tools as partners rather than competitors will be highly valuable",
+            "transition_difficulty": 2
+          },
+          {
+            "title": "Total Rewards Manager",
+            "why_safer": "Broader role integrating compensation, benefits, recognition, and employee experience—requires business acumen and strategic thinking across multiple dimensions beyond just pay analysis",
+            "transition_difficulty": 2
+          },
+          {
+            "title": "HR Business Partner",
+            "why_safer": "Strategic advisory role focused on aligning HR initiatives with business objectives, change leadership, and organizational effectiveness—interpersonal and strategic rather than analytical",
+            "transition_difficulty": 3
+          }
+        ],
+        "upskilling_path": [
+          {
+            "skill": "AI and Machine Learning Fundamentals",
+            "importance": 9,
+            "resources": "Coursera (Machine Learning, Andrew Ng), LinkedIn Learning (AI for HR professionals), books like 'The AI-First Company' by Ash Fontana"
+          },
+          {
+            "skill": "Data Analysis and SQL Programming",
+            "importance": 8,
+            "resources": "DataCamp SQL for HR, Mode Analytics SQL Tutorial, Coursera Data Science specializations"
+          },
+          {
+            "skill": "Organizational Change Management",
+            "importance": 9,
+            "resources": "Prosci ADKAR model training, Harvard ManageMentor, books like 'Leading Change' by John Kotter"
+          },
+          {
+            "skill": "Strategic Business Acumen and Financial Management",
+            "importance": 8,
+            "resources": "HBR courses, executive education programs, CFO finance for non-financial managers courses"
+          },
+          {
+            "skill": "Emotional Intelligence and Executive Communication",
+            "importance": 8,
+            "resources": "EQi-2.0 certification, executive coaching, Toastmasters, Harvard ManageMentor leadership modules"
+          }
+        ]
+      },
+      "skills_roadmap": {
+        "current_strengths": [
+          "Compensation analysis and benchmarking expertise—foundational knowledge that will help you understand what AI tools are doing and their limitations",
+          "Benefits administration and compliance knowledge—regulatory understanding will remain valuable even as execution becomes automated",
+          "Data interpretation and attention to detail—skills that transfer to working with AI outputs and catching errors",
+          "Stakeholder communication in technical areas—ability to explain complex compensation concepts will be valuable when communicating AI insights",
+          "Organizational awareness and political navigation—understanding company dynamics is essential for strategic roles"
+        ],
+        "skills_to_develop": [
+          "Prompt engineering and AI tool usage (ChatGPT, specialized HR AI platforms)",
+          "SQL and database querying for independent data analysis",
+          "Statistical thinking and hypothesis testing",
+          "Change management frameworks and execution",
+          "Strategic business thinking and financial acumen",
+          "Executive-level communication and influence",
+          "Emotional intelligence and coaching skills",
+          "Project management and cross-functional leadership"
+        ],
+        "timeline": {
+          "month_1": {
+            "week_1_2": "Assess current AI literacy—complete introductory course on AI/ML fundamentals (Coursera 'AI for Everyone'). Dedicate 5-7 hours.",
+            "week_3_4": "Begin exploring AI tools in HR—register for trial accounts with Workday, Ceridian, or other HR analytics platforms. Document what automations exist in your current tools."
+          },
+          "month_2": {
+            "week_1_2": "Start SQL fundamentals learning (DataCamp or Mode Analytics). Target 3-4 hours/week. This is critical for independence from pre-built tools.",
+            "week_3_4": "Complete first module of organizational change management training (Prosci ADKAR or equivalent). Understand change adoption principles."
+          },
+          "month_3": {
+            "week_1_2": "Deepen SQL skills—begin practicing with real HR datasets (with proper anonymization/permission). Complete 2-3 data analysis projects in your current role.",
+            "week_3_4": "Seek or propose a small change management project in your organization (benefits redesign rollout, compensation plan adjustment, etc.) to build practical experience."
+          },
+          "month_4": {
+            "week_1_2": "Complete AI in HR use-case course focusing on how AI augments compensation analysis. Understand emerging tools and limitations.",
+            "week_3_4": "Advanced strategic business concepts—begin reading HBR articles on compensation strategy, talent economics, and business strategy. Enroll in foundational business acumen course."
+          },
+          "month_5": {
+            "week_1_2": "Emotional intelligence development—complete EQi assessment or take emotional intelligence training module. Focus on executive communication.",
+            "week_3_4": "Create 30-60-90 day development plan with your manager to secure stretch assignments in strategic advisory or change leadership areas. Document goals."
+          },
+          "month_6": {
+            "week_1_2": "Consolidate learning—apply all skills to a strategic project. Use SQL for analysis, AI tools for benchmarking, and change management frameworks for implementation.",
+            "week_3_4": "Reflect and plan next phase—assess progress, identify which skills resonate most, and plan 6-12 month advanced development (certification, consulting project experience, etc.)."
+          }
+        }
+      },
+      "skills_roadmap_summary": "The 6-month roadmap prioritizes foundational AI and data literacy (months 1-2), applies these with hands-on projects (months 3-4), and balances with soft skill development in change management and emotional intelligence (months 5-6). Success requires consistent 7-10 hour/week commitment and active application within your role rather than passive learning.",
+      "asset_guidance": {
+        "general_principles": [
+          "Position yourself as the human-AI interface in compensation and HR—the professional who understands both the technical outputs of AI tools and the human/organizational context needed for wise decision-making. This hybrid expertise will be highly valuable as automation increases.",
+          "Shift your professional identity from 'specialist in compensation analysis' to 'strategic advisor in organizational effectiveness'—the future value is in guiding organizations on how to use automation insights wisely, not in producing the analyses themselves.",
+          "Build portable skills over domain-specific knowledge—while compensation expertise becomes less defensible, skills in change management, data interpretation, business strategy, and emotional intelligence are valuable across industries and contexts.",
+          "Cultivate networks in consulting, organizational development, and HR leadership—as AI reshapes this field, opportunities will increasingly be in advisory roles, and relationships are essential for access to these positions."
+        ],
+        "areas_of_focus": [
+          "Organizational change and transformation—companies will need experienced guides through AI-driven restructuring and compensation system changes",
+          "Human-centered HR strategy—as administration becomes automated, emphasis on employee experience, retention, engagement, and culture will increase",
+          "Executive compensation and talent strategy—while routine comp work automates, complex executive and specialized role compensation remains high-value advisory work",
+          "HR technology and systems implementation—professionals who understand both HR practice and how to implement/optimize AI-driven systems will be valuable",
+          "Business consulting and advisory services—transition toward independent or consulting-based work where you sell strategic insights rather than day-to-day execution"
+        ],
+        "avoid": [
+          "Don't become more specialized in narrowly technical compensation analysis—this is exactly what AI will automate best. Broaden toward strategy and change instead.",
+          "Don't ignore data and technology skills under the assumption that your domain expertise alone will protect you—the professionals who thrive will combine HR knowledge with technical literacy",
+          "Don't wait passively for your organization to adapt—proactively volunteer for projects involving AI implementation, change management, and strategic planning to position yourself for evolved roles",
+          "Don't assume that staying with one organization guarantees security—be prepared for organizational restructuring as HR functions consolidate and automate; maintain market awareness and networking",
+          "Don't neglect soft skills development in favor of purely technical training—emotional intelligence, communication, and change leadership become MORE valuable as execution becomes automated"
+        ]
+      },
+      "industry_outlook": "The compensation and benefits specialist field will undergo significant transformation over the next decade as AI automation reshapes the industry. The near-term (1-4 years) will see widespread adoption of AI-powered benchmarking tools, benefits modeling platforms, and automated compliance monitoring, reducing the volume of tactical analytical work and likely consolidating roles. Mid-level positions performing salary surveys, routine benefits analysis, and job descriptions will face the most significant displacement. However, this automation will create new demand for professionals who can interpret AI outputs, ensure organizational equity and fairness, and guide strategic compensation decisions informed by AI insights. The industry will likely see a bifurcation: junior roles focused on data entry and routine administration will decline, while senior strategic advisory roles emphasizing organizational change, compensation philosophy, and AI oversight will grow.",
+      "industry_outlook_continued": "By 2030-2034, organizations will increasingly view compensation management as a human-centered strategic function guided by AI-generated insights rather than as a primarily analytical domain. This shift will elevate the importance of change management, employee communication, and organizational development skills within the field. The 6% employment growth projection likely understates this transformation—total headcount may decline in the specialist category while growing in related advisory roles. Professionals who successfully transition will likely experience career elevation and increased compensation as they move from execution to strategy. However, those who fail to adapt may find themselves in declining roles with limited advancement opportunities. The field will likely see increased consolidation into broader HR business partner roles or specialized advisory positions, with pure compensation analysis becoming a shared responsibility across smaller teams supported by AI tools."
+    },
+    "analysis": {
+      "metrics": {
+        "summary_word_count": 186,
+        "task_count": 12,
+        "risk_distribution": {
+          "high": 3,
+          "medium": 6,
+          "low": 3
+        },
+        "immediate_actions_count": 5,
+        "adjacent_roles_count": 5,
+        "upskilling_count": 5,
+        "has_current_strengths": true,
+        "has_skills_to_develop": true,
+        "has_timeline": true,
+        "principles_count": 4,
+        "focus_areas_count": 5,
+        "avoid_count": 5,
+        "outlook_word_count": 128,
+        "total_chars": 17534,
+        "issue_count": 1
+      },
+      "issues": [
+        "High-risk job but few high-risk tasks"
+      ]
+    }
+  }
+]

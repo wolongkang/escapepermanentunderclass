@@ -20,6 +20,23 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServiceClient();
 
+    // Idempotency check: if report already exists for this payment, return it
+    if (paymentId) {
+      const { data: existing } = await supabase
+        .from("reports")
+        .select("slug, status")
+        .eq("stripe_payment_id", paymentId)
+        .single();
+
+      if (existing) {
+        return NextResponse.json({
+          reportUrl: `/report/${existing.slug}`,
+          slug: existing.slug,
+          status: existing.status,
+        });
+      }
+    }
+
     // Fetch job data
     const { data: job, error: jobError } = await supabase
       .from("jobs")

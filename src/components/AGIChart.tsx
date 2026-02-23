@@ -36,10 +36,10 @@ const PROJECTIONS = [
 
 // Key metrics that feed the index
 const METRICS = [
-  { label: "Benchmark Score", value: "82/100", change: "+6", period: "vs 6mo ago" },
-  { label: "Compute (FLOPs)", value: "10^26", change: "+10x", period: "vs 2023" },
-  { label: "Task Automation", value: "47%", change: "+12%", period: "of all tasks" },
-  { label: "Jobs Exposed", value: "300M", change: "+40%", period: "globally" },
+  { label: "Mag 7 AI CapEx", value: "$427B", change: "+67%", period: "2025 est. (RBC)" },
+  { label: "Global AI Spend", value: "$1.5T", change: "+52%", period: "2025 est. (Gartner)" },
+  { label: "Task Automation", value: "47%", change: "+12%", period: "of all tasks (OpenAI)" },
+  { label: "Jobs Exposed", value: "300M", change: "+40%", period: "globally (Goldman)" },
 ];
 
 export default function AGIChart() {

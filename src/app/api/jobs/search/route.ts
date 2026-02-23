@@ -5,7 +5,7 @@ import { searchLocalJobs } from "@/lib/local-jobs";
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q");
 
-  if (!query || query.length < 2) {
+  if (!query || query.length < 1) {
     return NextResponse.json({ jobs: [] });
   }
 
@@ -16,9 +16,9 @@ export async function GET(request: NextRequest) {
       const supabase = createServiceClient();
       const { data, error } = await supabase
         .from("jobs")
-        .select("id, title, category, ai_risk_score, onet_code")
+        .select("id, title, category, onet_code")
         .or(`title.ilike.%${query}%`)
-        .order("ai_risk_score", { ascending: false })
+        .order("title")
         .limit(20);
 
       if (!error && data && data.length > 0) {

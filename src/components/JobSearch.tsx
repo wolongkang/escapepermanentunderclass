@@ -1,45 +1,46 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 interface Job {
   id: string;
   title: string;
   category: string;
-  ai_risk_score: number;
   onet_code: string;
 }
 
 // Fallback jobs for when Supabase isn't connected yet
 const FALLBACK_JOBS: Job[] = [
-  { id: "1", title: "Software Engineer", category: "Technology", ai_risk_score: 4.8, onet_code: "15-1252.00" },
-  { id: "2", title: "Accountant", category: "Finance & Accounting", ai_risk_score: 7.8, onet_code: "13-2011.00" },
-  { id: "3", title: "Registered Nurse", category: "Healthcare", ai_risk_score: 2.1, onet_code: "29-1141.00" },
-  { id: "4", title: "Financial Analyst", category: "Finance & Accounting", ai_risk_score: 7.4, onet_code: "13-2051.00" },
-  { id: "5", title: "Graphic Designer", category: "Creative & Media", ai_risk_score: 6.5, onet_code: "27-1024.00" },
-  { id: "6", title: "Data Entry Clerk", category: "Administrative", ai_risk_score: 9.2, onet_code: "43-9021.00" },
-  { id: "7", title: "Marketing Manager", category: "Marketing & Sales", ai_risk_score: 5.2, onet_code: "11-2021.00" },
-  { id: "8", title: "Truck Driver", category: "Transportation", ai_risk_score: 6.9, onet_code: "53-3032.00" },
-  { id: "9", title: "Paralegal", category: "Legal", ai_risk_score: 7.6, onet_code: "23-2011.00" },
-  { id: "10", title: "Radiologist", category: "Healthcare", ai_risk_score: 5.8, onet_code: "29-1224.00" },
-  { id: "11", title: "Customer Service Representative", category: "Administrative", ai_risk_score: 8.5, onet_code: "43-4051.00" },
-  { id: "12", title: "Project Manager", category: "Technology", ai_risk_score: 4.2, onet_code: "11-9199.00" },
-  { id: "13", title: "Real Estate Agent", category: "Real Estate", ai_risk_score: 5.6, onet_code: "41-9022.00" },
-  { id: "14", title: "Pharmacist", category: "Healthcare", ai_risk_score: 5.4, onet_code: "29-1051.00" },
-  { id: "15", title: "Content Writer", category: "Creative & Media", ai_risk_score: 7.8, onet_code: "27-3043.00" },
-  { id: "16", title: "Mechanical Engineer", category: "Engineering", ai_risk_score: 3.9, onet_code: "17-2141.00" },
-  { id: "17", title: "Teacher (K-12)", category: "Education", ai_risk_score: 2.8, onet_code: "25-2031.00" },
-  { id: "18", title: "HR Specialist", category: "Human Resources", ai_risk_score: 6.2, onet_code: "13-1071.00" },
-  { id: "19", title: "Insurance Underwriter", category: "Insurance", ai_risk_score: 8.1, onet_code: "13-2053.00" },
-  { id: "20", title: "Bookkeeper", category: "Finance & Accounting", ai_risk_score: 8.7, onet_code: "43-3031.00" },
-  { id: "21", title: "Web Developer", category: "Technology", ai_risk_score: 5.5, onet_code: "15-1254.00" },
-  { id: "22", title: "Lawyer", category: "Legal", ai_risk_score: 4.5, onet_code: "23-1011.00" },
-  { id: "23", title: "Executive Assistant", category: "Administrative", ai_risk_score: 7.2, onet_code: "43-6011.00" },
-  { id: "24", title: "Sales Representative", category: "Marketing & Sales", ai_risk_score: 5.8, onet_code: "41-4012.00" },
-  { id: "25", title: "Supply Chain Manager", category: "Manufacturing", ai_risk_score: 5.1, onet_code: "11-3071.00" },
+  { id: "1", title: "Software Engineer", category: "Technology", onet_code: "15-1252.00" },
+  { id: "2", title: "Accountant", category: "Finance & Accounting", onet_code: "13-2011.00" },
+  { id: "3", title: "Registered Nurse", category: "Healthcare", onet_code: "29-1141.00" },
+  { id: "4", title: "Financial Analyst", category: "Finance & Accounting", onet_code: "13-2051.00" },
+  { id: "5", title: "Graphic Designer", category: "Creative & Media", onet_code: "27-1024.00" },
+  { id: "6", title: "Data Entry Clerk", category: "Administrative", onet_code: "43-9021.00" },
+  { id: "7", title: "Marketing Manager", category: "Marketing & Sales", onet_code: "11-2021.00" },
+  { id: "8", title: "Truck Driver", category: "Transportation", onet_code: "53-3032.00" },
+  { id: "9", title: "Paralegal", category: "Legal", onet_code: "23-2011.00" },
+  { id: "10", title: "Radiologist", category: "Healthcare", onet_code: "29-1224.00" },
+  { id: "11", title: "Customer Service Representative", category: "Administrative", onet_code: "43-4051.00" },
+  { id: "12", title: "Project Manager", category: "Technology", onet_code: "11-9199.00" },
+  { id: "13", title: "Real Estate Agent", category: "Real Estate", onet_code: "41-9022.00" },
+  { id: "14", title: "Pharmacist", category: "Healthcare", onet_code: "29-1051.00" },
+  { id: "15", title: "Content Writer", category: "Creative & Media", onet_code: "27-3043.00" },
+  { id: "16", title: "Mechanical Engineer", category: "Engineering", onet_code: "17-2141.00" },
+  { id: "17", title: "Teacher (K-12)", category: "Education", onet_code: "25-2031.00" },
+  { id: "18", title: "HR Specialist", category: "Human Resources", onet_code: "13-1071.00" },
+  { id: "19", title: "Insurance Underwriter", category: "Insurance", onet_code: "13-2053.00" },
+  { id: "20", title: "Bookkeeper", category: "Finance & Accounting", onet_code: "43-3031.00" },
+  { id: "21", title: "Web Developer", category: "Technology", onet_code: "15-1254.00" },
+  { id: "22", title: "Lawyer", category: "Legal", onet_code: "23-1011.00" },
+  { id: "23", title: "Executive Assistant", category: "Administrative", onet_code: "43-6011.00" },
+  { id: "24", title: "Sales Representative", category: "Marketing & Sales", onet_code: "41-4012.00" },
+  { id: "25", title: "Supply Chain Manager", category: "Manufacturing", onet_code: "11-3071.00" },
 ];
 
 export default function JobSearch() {
+  const t = useTranslations("search");
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -64,7 +65,7 @@ export default function JobSearch() {
   }, []);
 
   const searchJobs = useCallback(async (searchQuery: string) => {
-    if (searchQuery.length < 2) {
+    if (searchQuery.length < 1) {
       setSuggestions([]);
       setIsOpen(false);
       return;
@@ -126,7 +127,7 @@ export default function JobSearch() {
             onFocus={() => {
               if (suggestions.length > 0) setIsOpen(true);
             }}
-            placeholder="Enter your job title..."
+            placeholder={t("placeholder")}
             className="w-full px-6 py-4 text-lg bg-card border border-border rounded-xl focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-muted"
             aria-label="Search for your job title"
             autoComplete="off"
@@ -153,32 +154,29 @@ export default function JobSearch() {
         {isOpen && suggestions.length > 0 && (
           <div
             ref={dropdownRef}
-            className="absolute z-50 w-full mt-2 bg-[#1e1e22] border border-accent/30 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] overflow-hidden"
+            className="absolute z-50 w-full mt-2 rounded-xl overflow-hidden"
+            style={{
+              backgroundColor: "#1a1a2e",
+              border: "1px solid rgba(249, 115, 22, 0.4)",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(249,115,22,0.15)",
+            }}
           >
             <ul className="max-h-64 overflow-y-auto">
               {suggestions.map((job) => (
-                <li key={job.id}>
+                <li key={job.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                   <button
                     onClick={() => handleSelect(job)}
-                    className="w-full text-left px-6 py-3 hover:bg-card-hover transition-colors flex items-center justify-between"
+                    className="w-full text-left px-6 py-3 transition-colors flex items-center justify-between"
+                    style={{ color: "#fafafa" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#27272a")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                   >
                     <div>
-                      <span className="text-foreground">{job.title}</span>
-                      <span className="text-xs text-muted ml-2">
+                      <span style={{ color: "#fafafa" }}>{job.title}</span>
+                      <span className="text-xs ml-2" style={{ color: "#a1a1aa" }}>
                         {job.category}
                       </span>
                     </div>
-                    <span
-                      className={`text-sm font-medium ${
-                        job.ai_risk_score >= 7
-                          ? "text-danger"
-                          : job.ai_risk_score >= 4
-                          ? "text-yellow-400"
-                          : "text-success"
-                      }`}
-                    >
-                      {job.ai_risk_score}
-                    </span>
                   </button>
                 </li>
               ))}
@@ -196,16 +194,8 @@ export default function JobSearch() {
                 {selectedJob.category}
               </span>
             </div>
-            <span
-              className={`text-2xl font-bold ${
-                selectedJob.ai_risk_score >= 7
-                  ? "text-danger"
-                  : selectedJob.ai_risk_score >= 4
-                  ? "text-yellow-400"
-                  : "text-success"
-              }`}
-            >
-              {selectedJob.ai_risk_score}/10
+            <span className="text-sm text-accent font-medium">
+              {t("selected")}
             </span>
           </div>
         </div>
@@ -221,8 +211,8 @@ export default function JobSearch() {
         }`}
       >
         {selectedJob
-          ? "Get My AI Risk Report — $29.99 →"
-          : "Select your job to continue"}
+          ? `${t("getReport")} →`
+          : t("selectJob")}
       </button>
     </div>
   );

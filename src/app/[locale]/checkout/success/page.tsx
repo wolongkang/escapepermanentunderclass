@@ -2,8 +2,10 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
+import { useTranslations } from "next-intl";
 
 function SuccessContent() {
+  const t = useTranslations("success");
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const [status, setStatus] = useState<"loading" | "generating" | "ready" | "error">("loading");
@@ -15,7 +17,6 @@ function SuccessContent() {
       return;
     }
 
-    // Poll for report completion
     async function checkReport() {
       try {
         const res = await fetch(`/api/stripe/status?session_id=${sessionId}`);
@@ -26,11 +27,9 @@ function SuccessContent() {
           setStatus("ready");
         } else if (data.status === "generating") {
           setStatus("generating");
-          // Poll again in 3 seconds
           setTimeout(checkReport, 3000);
         } else if (data.status === "pending") {
           setStatus("generating");
-          // Trigger report generation
           if (data.jobId && data.email) {
             await fetch("/api/report/generate", {
               method: "POST",
@@ -68,32 +67,30 @@ function SuccessContent() {
         {status === "loading" && (
           <>
             <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-6" />
-            <h1 className="text-2xl font-bold mb-2">Processing payment...</h1>
-            <p className="text-muted">Verifying your purchase.</p>
+            <h1 className="text-2xl font-bold mb-2">{t("processing")}</h1>
+            <p className="text-muted">{t("verifying")}</p>
           </>
         )}
 
         {status === "generating" && (
           <>
             <div className="w-16 h-16 border-3 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-6" />
-            <h1 className="text-2xl font-bold mb-2">Generating your report...</h1>
-            <p className="text-muted mb-4">
-              Our AI is analyzing your job across 6 risk dimensions. This takes about 30 seconds.
-            </p>
+            <h1 className="text-2xl font-bold mb-2">{t("generating")}</h1>
+            <p className="text-muted mb-4">{t("generatingDesc")}</p>
             <div className="bg-card rounded-xl border border-border p-4 text-left">
               <div className="space-y-2 text-sm text-muted">
                 <p className="flex items-center gap-2">
-                  <span className="text-accent">&#10003;</span> Payment confirmed
+                  <span className="text-accent">&#10003;</span> {t("paymentConfirmed")}
                 </p>
                 <p className="flex items-center gap-2">
                   <span className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin inline-block" />
-                  Analyzing task automation potential
+                  {t("analyzingTasks")}
                 </p>
                 <p className="flex items-center gap-2 opacity-50">
-                  <span className="text-muted">&#9679;</span> Building career pivot plan
+                  <span className="text-muted">&#9679;</span> {t("buildingPlan")}
                 </p>
                 <p className="flex items-center gap-2 opacity-50">
-                  <span className="text-muted">&#9679;</span> Generating skills roadmap
+                  <span className="text-muted">&#9679;</span> {t("generatingRoadmap")}
                 </p>
               </div>
             </div>
@@ -105,15 +102,13 @@ function SuccessContent() {
             <div className="w-16 h-16 rounded-full bg-success/10 border border-success/20 flex items-center justify-center mx-auto mb-6">
               <span className="text-success text-3xl">&#10003;</span>
             </div>
-            <h1 className="text-2xl font-bold mb-2">Your report is ready!</h1>
-            <p className="text-muted mb-8">
-              Your personalized AI risk assessment has been generated.
-            </p>
+            <h1 className="text-2xl font-bold mb-2">{t("ready")}</h1>
+            <p className="text-muted mb-8">{t("readyDesc")}</p>
             <a
               href={reportUrl}
               className="inline-block px-8 py-4 bg-accent hover:bg-accent-hover rounded-xl text-white font-semibold transition-colors glow-orange"
             >
-              View My Report →
+              {t("viewReport")} →
             </a>
           </>
         )}
@@ -123,15 +118,10 @@ function SuccessContent() {
             <div className="w-16 h-16 rounded-full bg-danger/10 border border-danger/20 flex items-center justify-center mx-auto mb-6">
               <span className="text-danger text-3xl">!</span>
             </div>
-            <h1 className="text-2xl font-bold mb-2">Something went wrong</h1>
-            <p className="text-muted mb-8">
-              Don&apos;t worry — your payment was processed. Please contact us and we&apos;ll get your report to you.
-            </p>
-            <a
-              href="/"
-              className="text-accent hover:text-accent-hover transition-colors"
-            >
-              Back to home
+            <h1 className="text-2xl font-bold mb-2">{t("errorTitle")}</h1>
+            <p className="text-muted mb-8">{t("errorDesc")}</p>
+            <a href="/" className="text-accent hover:text-accent-hover transition-colors">
+              {t("backHome")}
             </a>
           </>
         )}

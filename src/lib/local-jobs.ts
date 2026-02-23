@@ -1008,10 +1008,11 @@ const JOBS: LocalJob[] = [
   { id: "53-7199.00", title: "Material Moving Workers, All Other", category: "Transportation", ai_risk_score: 4.6, onet_code: "53-7199.00" },
 ];
 
-export function searchLocalJobs(query: string): LocalJob[] {
+export function searchLocalJobs(query: string) {
   const q = query.toLowerCase();
   return JOBS
     .filter(j => j.title.toLowerCase().includes(q))
-    .sort((a, b) => b.ai_risk_score - a.ai_risk_score)
-    .slice(0, 20);
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .slice(0, 20)
+    .map(({ id, title, category, onet_code }) => ({ id, title, category, onet_code }));
 }
