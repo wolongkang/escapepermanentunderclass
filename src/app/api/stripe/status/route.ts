@@ -1,4 +1,3 @@
-import { getStripe } from "@/lib/stripe";
 import { createServiceClient } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,13 +9,26 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const session = await getStripe().checkout.sessions.retrieve(sessionId);
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey) {
+      return NextResponse.json({ status: "error", error: "Stripe not configured" }, { status: 500 });
+    }
+
+    const res = await fetch(`https://api.stripe.com/v1/checkout/sessions/${sessionId}`, {
+      headers: { "Authorization": `Bearer ${stripeKey}` },
+    });
+    const session = await res.json();
+
+    if (!res.ok) {
+      return NextResponse.json({ status: "error" }, { status: 500 });
+    }
 
     if (session.payment_status !== "paid") {
       return NextResponse.json({ status: "unpaid" });
     }
 
-    const { jobId, email } = session.metadata || {};
+    const jobId = session.metadata?.jobId;
+    const email = session.metadata?.email;
 
     if (!jobId || !email) {
       return NextResponse.json({ status: "error", error: "Missing metadata" });
