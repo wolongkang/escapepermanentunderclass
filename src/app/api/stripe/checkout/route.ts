@@ -19,7 +19,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").trim();
+    const successUrl = `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${appUrl}/checkout?job=${encodeURIComponent(jobId)}&title=${encodeURIComponent(jobTitle)}`;
 
     const params = new URLSearchParams();
     params.append("payment_method_types[]", "card");
@@ -30,8 +32,8 @@ export async function POST(request: NextRequest) {
     params.append("line_items[0][price_data][unit_amount]", "2999");
     params.append("line_items[0][quantity]", "1");
     params.append("mode", "payment");
-    params.append("success_url", `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`);
-    params.append("cancel_url", `${appUrl}/checkout?job=${encodeURIComponent(jobId)}&title=${encodeURIComponent(jobTitle)}`);
+    params.append("success_url", successUrl);
+    params.append("cancel_url", cancelUrl);
     params.append("metadata[jobId]", jobId);
     params.append("metadata[jobTitle]", jobTitle);
     params.append("metadata[email]", email);
