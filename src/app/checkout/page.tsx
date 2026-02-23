@@ -19,24 +19,18 @@ function CheckoutContent() {
     setError("");
 
     try {
-      // TODO: Integrate Stripe payment here
-      // For now, skip to report generation directly
-      const res = await fetch("/api/report/generate", {
+      const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          jobId,
-          email,
-          paymentId: "test_" + Date.now(), // Placeholder until Stripe is connected
-        }),
+        body: JSON.stringify({ jobId, jobTitle, email }),
       });
 
       const data = await res.json();
 
-      if (data.reportUrl) {
-        window.location.href = data.reportUrl;
+      if (data.url) {
+        window.location.href = data.url;
       } else {
-        setError(data.error || "Failed to generate report. Please try again.");
+        setError(data.error || "Failed to create checkout session.");
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -158,16 +152,21 @@ function CheckoutContent() {
             {isLoading ? (
               <span className="flex items-center justify-center gap-3">
                 <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Generating Report...
+                Redirecting to payment...
               </span>
             ) : (
               "Pay $29.99 & Get Report →"
             )}
           </button>
 
-          <p className="text-xs text-muted text-center mt-4">
-            Secure payment via Stripe. Instant delivery.
-          </p>
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <svg className="w-4 h-4 text-muted" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+            </svg>
+            <p className="text-xs text-muted">
+              Secure payment powered by Stripe
+            </p>
+          </div>
         </form>
       </div>
     </div>

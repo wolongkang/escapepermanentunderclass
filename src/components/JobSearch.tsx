@@ -153,7 +153,7 @@ export default function JobSearch() {
         {isOpen && suggestions.length > 0 && (
           <div
             ref={dropdownRef}
-            className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-2xl overflow-hidden"
+            className="absolute z-50 w-full mt-2 bg-[#1e1e22] border border-accent/30 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] overflow-hidden"
           >
             <ul className="max-h-64 overflow-y-auto">
               {suggestions.map((job) => (
