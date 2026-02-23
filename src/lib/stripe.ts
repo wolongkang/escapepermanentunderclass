@@ -9,7 +9,8 @@ export function getStripe(): Stripe {
       throw new Error("STRIPE_SECRET_KEY is not set");
     }
     _stripe = new Stripe(key, {
-      httpClient: Stripe.createFetchHttpClient(),
+      maxNetworkRetries: 3,
+      timeout: 30000,
     });
   }
   return _stripe;
