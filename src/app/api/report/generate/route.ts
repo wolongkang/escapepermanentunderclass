@@ -169,7 +169,7 @@ Return ONLY valid JSON, no markdown formatting.`;
 
   const response = await anthropic.messages.create({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 4000,
+    max_tokens: 8192,
     messages: [{ role: "user", content: prompt }],
   });
 
@@ -178,7 +178,19 @@ Return ONLY valid JSON, no markdown formatting.`;
       response.content[0].type === "text" ? response.content[0].text : "";
     // Try to parse JSON, handle potential markdown wrapping
     const jsonStr = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    return JSON.parse(jsonStr);
+    try {
+      return JSON.parse(jsonStr);
+    } catch {
+      // If JSON is truncated, try to repair by closing open strings/braces
+      let repaired = jsonStr;
+      const openBraces = (repaired.match(/{/g) || []).length - (repaired.match(/}/g) || []).length;
+      const openBrackets = (repaired.match(/\[/g) || []).length - (repaired.match(/]/g) || []).length;
+      const quoteCount = (repaired.match(/(?<!\\)"/g) || []).length;
+      if (quoteCount % 2 !== 0) repaired += '"';
+      for (let i = 0; i < openBrackets; i++) repaired += "]";
+      for (let i = 0; i < openBraces; i++) repaired += "}";
+      return JSON.parse(repaired);
+    }
   } catch {
     return {
       executive_summary:

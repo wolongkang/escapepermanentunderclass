@@ -9,6 +9,7 @@ interface XPost {
   handle: string;
   timestamp: string;
   topic: string;
+  url?: string;
 }
 
 const TOPIC_COLORS: Record<string, string> = {
@@ -67,9 +68,12 @@ export default function XFeed() {
       </div>
       <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1 scrollbar-thin">
         {posts.map((post, i) => (
-          <div
+          <a
+            href={post.url || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
             key={post.id || i}
-            className="bg-card/60 border border-border/50 rounded-lg p-3 hover:bg-card-hover transition-colors"
+            className="block bg-card/60 border border-border/50 rounded-lg p-3 hover:bg-card-hover transition-colors cursor-pointer"
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5 min-w-0">
@@ -94,7 +98,7 @@ export default function XFeed() {
             <span className="text-[10px] text-muted/60 mt-1 block">
               {post.timestamp}
             </span>
-          </div>
+          </a>
         ))}
       </div>
     </div>

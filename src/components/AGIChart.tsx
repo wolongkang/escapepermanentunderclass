@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 
-// AGI Advancement Index data points (normalized 0-100)
-// Composite of: AI benchmark performance, compute scaling, task automation breadth,
-// investment levels, and research paper velocity
+// AI Acceleration Index data points (normalized 0-100)
+// Composite of: Mag 7 CapEx, global AI spend, token consumption,
+// AI user base, agent adoption, benchmark performance, compute scaling
 const HISTORICAL_DATA = [
   { year: 2018, month: "Jan", index: 12, label: "GPT-1 era" },
   { year: 2019, month: "Jan", index: 18, label: "GPT-2" },
@@ -20,26 +20,30 @@ const HISTORICAL_DATA = [
   { year: 2024, month: "Sep", index: 72, label: "o1 reasoning" },
   { year: 2024, month: "Dec", index: 76, label: "Gemini 2.0 / o3" },
   { year: 2025, month: "Jan", index: 79, label: "DeepSeek R1" },
-  { year: 2025, month: "Feb", index: 82, label: "Claude 4 / GPT-5" },
+  { year: 2025, month: "May", index: 83, label: "GPT-4.5 / Gemini 2.5" },
+  { year: 2025, month: "Aug", index: 86, label: "1B AI users milestone" },
+  { year: 2025, month: "Nov", index: 88, label: "o3-pro / Agent era" },
+  { year: 2026, month: "Feb", index: 91, label: "Claude 4.6 / $650B CapEx" },
 ];
 
 // Projected trajectory
 const PROJECTIONS = [
-  { year: 2025, month: "Jun", index: 86 },
-  { year: 2025, month: "Dec", index: 90 },
   { year: 2026, month: "Jun", index: 93 },
   { year: 2026, month: "Dec", index: 95 },
-  { year: 2027, month: "Jun", index: 97 },
-  { year: 2027, month: "Dec", index: 98 },
-  { year: 2028, month: "Jun", index: 99 },
+  { year: 2027, month: "Jun", index: 96 },
+  { year: 2027, month: "Dec", index: 97 },
+  { year: 2028, month: "Jun", index: 98 },
+  { year: 2028, month: "Dec", index: 99 },
 ];
 
-// Key metrics that feed the index
+// Compound index metrics with sources
 const METRICS = [
-  { label: "Mag 7 AI CapEx", value: "$427B", change: "+67%", period: "2025 est. (RBC)" },
-  { label: "Global AI Spend", value: "$1.5T", change: "+52%", period: "2025 est. (Gartner)" },
-  { label: "Task Automation", value: "47%", change: "+12%", period: "of all tasks (OpenAI)" },
-  { label: "Jobs Exposed", value: "300M", change: "+40%", period: "globally (Goldman)" },
+  { label: "Mag 7 AI CapEx", value: "$650B", change: "+68%", period: "2026 est. (Goldman)" },
+  { label: "Global AI Spend", value: "$2.52T", change: "+44%", period: "2026 (Gartner)" },
+  { label: "Tokens / Day", value: "50T+", change: "+20x", period: "global (Fireworks AI)" },
+  { label: "AI Chat Users", value: "1.5B+", change: "+95%", period: "monthly (DataReportal)" },
+  { label: "Agent Adoption", value: "79%", change: "+8x", period: "of enterprises (PwC)" },
+  { label: "Paid Subscribers", value: "35M+", change: "+250%", period: "ChatGPT alone (OpenAI)" },
 ];
 
 export default function AGIChart() {
@@ -254,13 +258,13 @@ export default function AGIChart() {
     <div className={`transition-all duration-1000 ${animated ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-bold">AGI Advancement Index</h3>
+          <h3 className="text-lg font-bold">AI Acceleration Index</h3>
           <p className="text-xs text-muted">
-            Composite index tracking AI capability progression toward AGI
+            Compound index: CapEx, spend, tokens, users, agents, benchmarks
           </p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-accent">82</div>
+          <div className="text-2xl font-bold text-accent">91</div>
           <div className="text-xs text-muted">/100</div>
         </div>
       </div>
@@ -294,8 +298,8 @@ export default function AGIChart() {
         </div>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-2 gap-2">
+      {/* Compound Index Metrics */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
         {METRICS.map((m) => (
           <div
             key={m.label}

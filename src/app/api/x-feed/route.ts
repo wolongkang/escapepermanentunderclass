@@ -10,57 +10,141 @@ interface XPost {
   handle: string;
   timestamp: string;
   topic: string;
+  url: string;
 }
 
-const TOPICS = ["AI replacing jobs", "AGI timeline", "AI compute scaling", "AI and employment", "AI automation workforce"];
+// Search queries for trending AI/AGI/jobs content
+const SEARCH_QUERIES = [
+  "(AGI OR artificial general intelligence) -is:retweet lang:en",
+  "(AI replacing jobs OR AI automation jobs OR AI unemployment) -is:retweet lang:en",
+  "(AI compute OR AI scaling OR GPU cluster) -is:retweet lang:en",
+  "(future of work AI OR AI workforce) -is:retweet lang:en",
+];
+
+function classifyTopic(text: string): string {
+  const lower = text.toLowerCase();
+  if (lower.includes("agi") || lower.includes("artificial general intelligence")) return "AGI";
+  if (lower.includes("compute") || lower.includes("gpu") || lower.includes("scaling") || lower.includes("chip")) return "Compute";
+  if (lower.includes("job") || lower.includes("employ") || lower.includes("workforce") || lower.includes("labor") || lower.includes("hiring") || lower.includes("layoff")) return "Jobs";
+  if (lower.includes("automat") || lower.includes("replac") || lower.includes("displace")) return "Automation";
+  return "AI";
+}
+
+function getRelativeTime(dateStr: string): string {
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  const diffMs = now - then;
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  const diffDays = Math.floor(diffHr / 24);
+  return `${diffDays}d ago`;
+}
 
 export async function GET() {
-  const apiKey = process.env.XAI_API_KEY;
+  const bearerToken = process.env.X_BEARER_TOKEN;
 
-  if (!apiKey) {
+  if (!bearerToken) {
     return NextResponse.json({ posts: getFallbackPosts() });
   }
 
   try {
-    const response = await fetch("https://api.x.ai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "grok-3-mini",
-        messages: [
-          {
-            role: "system",
-            content: `You are a real-time X/Twitter feed curator. Search X for the most recent trending posts about AI, AGI, compute, AI replacing jobs, and workforce automation. Return exactly 8 posts as a JSON array. Each post must have: text (the post content, max 200 chars), author (display name), handle (twitter handle with @), timestamp (relative like "2h ago"), topic (one of: AI, AGI, Compute, Jobs, Automation). Only return the JSON array, nothing else. Make these reflect real current discourse and trending topics on X right now.`,
-          },
-          {
-            role: "user",
-            content: `Find the 8 most engaging recent X posts about: ${TOPICS.join(", ")}. Return as JSON array only.`,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 1500,
-      }),
-    });
+    // Pick 2 random queries to diversify results
+    const shuffled = [...SEARCH_QUERIES].sort(() => Math.random() - 0.5);
+    const queries = shuffled.slice(0, 2);
 
-    if (!response.ok) {
-      console.error("xAI API error:", response.status);
+    const allPosts: XPost[] = [];
+
+    for (const query of queries) {
+      const params = new URLSearchParams({
+        query,
+        max_results: "10",
+        "tweet.fields": "created_at,public_metrics,author_id",
+        expansions: "author_id",
+        "user.fields": "name,username",
+        sort_order: "relevancy",
+      });
+
+      const response = await fetch(
+        `https://api.twitter.com/2/tweets/search/recent?${params}`,
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+          },
+          next: { revalidate: 300 },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Twitter API error:", response.status, await response.text());
+        continue;
+      }
+
+      const data = await response.json();
+      const tweets = data.data || [];
+      const users = data.includes?.users || [];
+
+      // Build user lookup
+      const userMap = new Map<string, { name: string; username: string }>();
+      for (const user of users) {
+        userMap.set(user.id, { name: user.name, username: user.username });
+      }
+
+      for (const tweet of tweets) {
+        const user = userMap.get(tweet.author_id);
+        if (!user) continue;
+
+        // Skip very short tweets
+        if (tweet.text.length < 40) continue;
+
+        allPosts.push({
+          id: tweet.id,
+          text: tweet.text.replace(/https:\/\/t\.co\/\w+/g, "").trim(),
+          author: user.name,
+          handle: `@${user.username}`,
+          timestamp: getRelativeTime(tweet.created_at),
+          topic: classifyTopic(tweet.text),
+          url: `https://x.com/${user.username}/status/${tweet.id}`,
+        });
+      }
+    }
+
+    if (allPosts.length === 0) {
       return NextResponse.json({ posts: getFallbackPosts() });
     }
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "";
+    // Deduplicate by id, take top 8
+    const seen = new Set<string>();
+    const unique = allPosts.filter((p) => {
+      if (seen.has(p.id)) return false;
+      seen.add(p.id);
+      return true;
+    });
 
-    // Parse JSON from response
-    const jsonMatch = content.match(/\[[\s\S]*\]/);
-    if (jsonMatch) {
-      const posts = JSON.parse(jsonMatch[0]) as XPost[];
-      return NextResponse.json({ posts: posts.slice(0, 8) });
+    // Try to get variety of topics
+    const byTopic = new Map<string, XPost[]>();
+    for (const post of unique) {
+      if (!byTopic.has(post.topic)) byTopic.set(post.topic, []);
+      byTopic.get(post.topic)!.push(post);
     }
 
-    return NextResponse.json({ posts: getFallbackPosts() });
+    // Round-robin pick from topics to get diversity
+    const selected: XPost[] = [];
+    let round = 0;
+    const topics = [...byTopic.keys()];
+    while (selected.length < 8 && round < 10) {
+      for (const topic of topics) {
+        const pool = byTopic.get(topic)!;
+        if (pool[round]) {
+          selected.push(pool[round]);
+          if (selected.length >= 8) break;
+        }
+      }
+      round++;
+    }
+
+    return NextResponse.json({ posts: selected });
   } catch (error) {
     console.error("X feed error:", error);
     return NextResponse.json({ posts: getFallbackPosts() });
@@ -76,6 +160,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@ai_insider",
       timestamp: "1h ago",
       topic: "AI",
+      url: "#",
     },
     {
       id: "2",
@@ -84,6 +169,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@futureofwork",
       timestamp: "2h ago",
       topic: "Jobs",
+      url: "#",
     },
     {
       id: "3",
@@ -92,6 +178,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@computetracker",
       timestamp: "3h ago",
       topic: "Compute",
+      url: "#",
     },
     {
       id: "4",
@@ -100,6 +187,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@techdisrupt",
       timestamp: "4h ago",
       topic: "Automation",
+      url: "#",
     },
     {
       id: "5",
@@ -108,6 +196,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@agiwatch",
       timestamp: "5h ago",
       topic: "AGI",
+      url: "#",
     },
     {
       id: "6",
@@ -116,6 +205,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@financeai",
       timestamp: "6h ago",
       topic: "Jobs",
+      url: "#",
     },
     {
       id: "7",
@@ -124,6 +214,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@deeptech_daily",
       timestamp: "7h ago",
       topic: "AI",
+      url: "#",
     },
     {
       id: "8",
@@ -132,6 +223,7 @@ function getFallbackPosts(): XPost[] {
       handle: "@laborecon",
       timestamp: "8h ago",
       topic: "Automation",
+      url: "#",
     },
   ];
 }

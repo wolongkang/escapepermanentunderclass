@@ -3,9 +3,28 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import * as fs from "fs";
+import * as path from "path";
+
+// Load .env.local for API key
+const envPath = path.resolve(process.cwd(), ".env.local");
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, "utf-8");
+  for (const line of envContent.split("\n")) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith("#")) {
+      const eqIdx = trimmed.indexOf("=");
+      if (eqIdx > 0) {
+        const key = trimmed.slice(0, eqIdx).trim();
+        const val = trimmed.slice(eqIdx + 1).trim();
+        if (!process.env[key]) process.env[key] = val;
+      }
+    }
+  }
+}
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
+  maxRetries: 5,
 });
 
 // 20 diverse jobs spanning different risk levels, categories, and types
@@ -100,14 +119,30 @@ Return ONLY valid JSON, no markdown formatting.`;
 
   const response = await anthropic.messages.create({
     model: "claude-haiku-4-5-20251001",
-    max_tokens: 4000,
+    max_tokens: 8192,
     messages: [{ role: "user", content: prompt }],
   });
 
   const text = response.content[0].type === "text" ? response.content[0].text : "";
   const jsonStr = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
 
-  const parsed = JSON.parse(jsonStr);
+  let parsed;
+  try {
+    parsed = JSON.parse(jsonStr);
+  } catch {
+    // If JSON is truncated, try to repair it by closing open strings/braces
+    let repaired = jsonStr;
+    // Count open braces/brackets
+    const openBraces = (repaired.match(/{/g) || []).length - (repaired.match(/}/g) || []).length;
+    const openBrackets = (repaired.match(/\[/g) || []).length - (repaired.match(/]/g) || []).length;
+    // Close any open string
+    const quoteCount = (repaired.match(/(?<!\\)"/g) || []).length;
+    if (quoteCount % 2 !== 0) repaired += '"';
+    // Close brackets and braces
+    for (let i = 0; i < openBrackets; i++) repaired += "]";
+    for (let i = 0; i < openBraces; i++) repaired += "}";
+    parsed = JSON.parse(repaired);
+  }
 
   return {
     job: job.title,
