@@ -3,6 +3,10 @@ import Anthropic from "@anthropic-ai/sdk";
 import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 
+const REPORT_SECRET = process.env.REPORT_GENERATE_SECRET || "";
+const PRICE_CENTS = 2999;
+const STALE_REPORT_MS = 5 * 60 * 1000; // 5 minutes — allow re-generation if stuck
+
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
   maxRetries: 5,
@@ -12,31 +16,51 @@ const X_BEARER_TOKEN = process.env.X_BEARER_TOKEN;
 
 export async function POST(request: NextRequest) {
   try {
+    // Auth: require shared secret to prevent free report bypass
+    const authHeader = request.headers.get("x-report-secret");
+    if (!REPORT_SECRET || authHeader !== REPORT_SECRET) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { jobId, email, paymentId, age, country, yearsExperience } = await request.json();
 
-    if (!jobId || !email) {
+    if (!jobId || !email || !paymentId) {
       return NextResponse.json(
-        { error: "Missing jobId or email" },
+        { error: "Missing jobId, email, or paymentId" },
         { status: 400 }
       );
     }
 
     const supabase = createServiceClient();
 
-    // Idempotency check: if report already exists for this payment, return it
-    if (paymentId) {
-      const { data: existing } = await supabase
-        .from("reports")
-        .select("slug, status")
-        .eq("stripe_payment_id", paymentId)
-        .single();
+    // Idempotency: if report already exists for this payment, return it
+    // But allow re-generation if stuck in "generating" for >5 minutes
+    const { data: existing } = await supabase
+      .from("reports")
+      .select("id, slug, status, created_at")
+      .eq("stripe_payment_id", paymentId)
+      .single();
 
-      if (existing) {
+    if (existing) {
+      if (existing.status === "completed") {
         return NextResponse.json({
           reportUrl: `/report/${existing.slug}`,
           slug: existing.slug,
           status: existing.status,
         });
+      }
+      // If stuck generating for >5 min, delete stale record and re-generate
+      const age_ms = Date.now() - new Date(existing.created_at).getTime();
+      if (existing.status === "generating" && age_ms < STALE_REPORT_MS) {
+        return NextResponse.json({
+          reportUrl: `/report/${existing.slug}`,
+          slug: existing.slug,
+          status: "generating",
+        });
+      }
+      // Stale — remove so we can re-create below
+      if (existing.status === "generating" && age_ms >= STALE_REPORT_MS) {
+        await supabase.from("reports").delete().eq("id", existing.id);
       }
     }
 
@@ -61,7 +85,7 @@ export async function POST(request: NextRequest) {
         slug,
         risk_score: job.ai_risk_score,
         stripe_payment_id: paymentId,
-        amount_paid: 2999,
+        amount_paid: PRICE_CENTS,
         status: "generating",
       })
       .select()
@@ -103,6 +127,8 @@ export async function POST(request: NextRequest) {
 
     if (updateError) {
       console.error("Report update error:", updateError);
+      // Try to mark as failed so it doesn't stay stuck in "generating"
+      await supabase.from("reports").update({ status: "failed" }).eq("id", report.id);
     }
 
     return NextResponse.json({

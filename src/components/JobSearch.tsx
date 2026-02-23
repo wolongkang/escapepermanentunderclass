@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 interface Job {
   id: string;
@@ -41,6 +41,7 @@ const FALLBACK_JOBS: Job[] = [
 
 export default function JobSearch() {
   const t = useTranslations("search");
+  const locale = useLocale();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -112,7 +113,8 @@ export default function JobSearch() {
 
   function handleGetReport() {
     if (!selectedJob) return;
-    window.location.href = `/checkout?job=${encodeURIComponent(selectedJob.id)}&title=${encodeURIComponent(selectedJob.title)}`;
+    const prefix = locale === "en" ? "" : `/${locale}`;
+    window.location.href = `${prefix}/checkout?job=${encodeURIComponent(selectedJob.id)}&title=${encodeURIComponent(selectedJob.title)}`;
   }
 
   return (

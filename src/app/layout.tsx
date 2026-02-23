@@ -25,13 +25,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale?: string }>;
 }>) {
+  const { locale } = await params.catch(() => ({ locale: "en" }));
+  const lang = locale || "en";
+
   return (
-    <html lang="en" className="dark">
+    <html lang={lang} className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

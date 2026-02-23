@@ -1,15 +1,20 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
 import { useTranslations } from "next-intl";
+
+const MAX_POLLS = 40; // ~2 minutes max polling (40 * 3s)
+const REPORT_SECRET = process.env.NEXT_PUBLIC_REPORT_SECRET || "";
 
 function SuccessContent() {
   const t = useTranslations("success");
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  const [status, setStatus] = useState<"loading" | "generating" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "generating" | "ready" | "error" | "timeout">("loading");
   const [reportUrl, setReportUrl] = useState("");
+  const pollCount = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!sessionId) {
@@ -18,6 +23,13 @@ function SuccessContent() {
     }
 
     async function checkReport() {
+      pollCount.current += 1;
+
+      if (pollCount.current > MAX_POLLS) {
+        setStatus("timeout");
+        return;
+      }
+
       try {
         const res = await fetch(`/api/stripe/status?session_id=${sessionId}`);
         const data = await res.json();
@@ -27,24 +39,12 @@ function SuccessContent() {
           setStatus("ready");
         } else if (data.status === "generating") {
           setStatus("generating");
-          setTimeout(checkReport, 3000);
+          timeoutRef.current = setTimeout(checkReport, 3000);
         } else if (data.status === "pending") {
           setStatus("generating");
-          if (data.jobId && data.email) {
-            await fetch("/api/report/generate", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                jobId: data.jobId,
-                email: data.email,
-                paymentId: data.paymentId,
-                age: data.age,
-                country: data.country,
-                yearsExperience: data.yearsExperience,
-              }),
-            });
-            setTimeout(checkReport, 2000);
-          }
+          // Trigger report generation server-side (status route handles it now)
+          await fetch(`/api/stripe/status?session_id=${sessionId}&trigger=1`);
+          timeoutRef.current = setTimeout(checkReport, 3000);
         } else {
           setStatus("error");
         }
@@ -54,6 +54,11 @@ function SuccessContent() {
     }
 
     checkReport();
+
+    // Cleanup timeouts on unmount
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [sessionId]);
 
   return (
@@ -111,8 +116,30 @@ function SuccessContent() {
               href={reportUrl}
               className="inline-block px-8 py-4 bg-accent hover:bg-accent-hover rounded-xl text-white font-semibold transition-colors glow-orange"
             >
-              {t("viewReport")} →
+              {t("viewReport")} &rarr;
             </a>
+          </>
+        )}
+
+        {status === "timeout" && (
+          <>
+            <div className="w-16 h-16 rounded-full bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center mx-auto mb-6">
+              <span className="text-yellow-400 text-3xl">&#9203;</span>
+            </div>
+            <h1 className="text-2xl font-bold mb-2">Taking Longer Than Expected</h1>
+            <p className="text-muted mb-4">
+              Your report is still being generated. This can sometimes take a few extra minutes.
+              We&apos;ll email you at the address you provided once it&apos;s ready.
+            </p>
+            <p className="text-sm text-muted mb-8">
+              You can also refresh this page to check again.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-8 py-3 bg-accent hover:bg-accent-hover rounded-xl text-white font-semibold transition-colors"
+            >
+              Refresh Page
+            </button>
           </>
         )}
 

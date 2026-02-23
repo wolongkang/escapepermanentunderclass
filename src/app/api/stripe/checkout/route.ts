@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     if (!res.ok) {
       console.error("Stripe API error:", session);
       return NextResponse.json(
-        { error: "Stripe error", detail: session.error?.message || "Unknown" },
+        { error: "Payment system error. Please try again." },
         { status: 500 }
       );
     }
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Stripe checkout error:", message);
     return NextResponse.json(
-      { error: "Failed to create checkout session", detail: message },
+      { error: "Failed to create checkout session. Please try again." },
       { status: 500 }
     );
   }

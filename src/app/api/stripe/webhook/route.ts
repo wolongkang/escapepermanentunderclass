@@ -1,6 +1,8 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
+const REPORT_SECRET = process.env.REPORT_GENERATE_SECRET || "";
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const signature = request.headers.get("stripe-signature");
@@ -23,20 +25,27 @@ export async function POST(request: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const { jobId, email } = session.metadata || {};
+    const { jobId, email, age, country, yearsExperience } = session.metadata || {};
 
     if (jobId && email) {
       const appUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").trim();
       try {
-        await fetch(`${appUrl}/api/report/generate`, {
+        // Fire-and-forget with auth header
+        fetch(`${appUrl}/api/report/generate`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-report-secret": REPORT_SECRET,
+          },
           body: JSON.stringify({
             jobId,
             email,
             paymentId: session.payment_intent,
+            age: age ? parseInt(age) : undefined,
+            country: country || undefined,
+            yearsExperience: yearsExperience ? parseInt(yearsExperience) : undefined,
           }),
-        });
+        }).catch((err) => console.error("Report generation trigger failed:", err));
       } catch (err) {
         console.error("Report generation trigger failed:", err);
       }
