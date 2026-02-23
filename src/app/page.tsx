@@ -2,6 +2,7 @@ import JobSearch from "@/components/JobSearch";
 import RiskMeter from "@/components/RiskMeter";
 import Stats from "@/components/Stats";
 import XFeed from "@/components/XFeed";
+import AGIChart from "@/components/AGIChart";
 
 const features = [
   {
@@ -39,12 +40,18 @@ const sampleInsights = [
 ];
 
 const dataSources = [
-  { name: "U.S. Dept. of Labor O*NET", detail: "997 occupations", icon: "🏛️" },
-  { name: "Bureau of Labor Statistics", detail: "Employment & wages", icon: "📈" },
-  { name: "BLS Employment Projections", detail: "10-year forecasts", icon: "🔮" },
-  { name: "World Economic Forum", detail: "Future of Jobs Report", icon: "🌍" },
-  { name: "McKinsey Global Institute", detail: "AI automation research", icon: "📋" },
-  { name: "OECD Employment Outlook", detail: "G20 labor analysis", icon: "🌐" },
+  { name: "U.S. Dept. of Labor O*NET", detail: "997 occupations, task descriptions, skill profiles", icon: "🏛️" },
+  { name: "Bureau of Labor Statistics", detail: "Median salaries, employment counts for all occupations", icon: "📈" },
+  { name: "BLS Employment Projections", detail: "10-year growth rates across all sectors", icon: "🔮" },
+  { name: "Frey & Osborne (Oxford)", detail: "702 occupations, automation probability scores", icon: "🎓" },
+  { name: "OpenAI GPTs are GPTs", detail: "Task-level LLM exposure analysis", icon: "🤖" },
+  { name: "Felten AIOE Index", detail: "AI occupational exposure by SOC code", icon: "📊" },
+  { name: "World Economic Forum", detail: "Future of Jobs Report 2025, 55 economies", icon: "🌍" },
+  { name: "McKinsey Global Institute", detail: "800+ occupations, 46 countries analyzed", icon: "📋" },
+  { name: "OECD Employment Outlook", detail: "G20 labor market analysis, 27% automation risk", icon: "🌐" },
+  { name: "ILO Global Index", detail: "30,000 tasks, 50,000 human assessments", icon: "🏢" },
+  { name: "IMF GenAI Analysis", detail: "40% global employment exposure, 108 countries", icon: "💰" },
+  { name: "Brookings Institution", detail: "36M U.S. workers highly exposed analysis", icon: "🏫" },
 ];
 
 export default function Home() {
@@ -148,36 +155,99 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Data Credibility Section */}
+      {/* AGI Advancement Index */}
       <section className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div>
+              <AGIChart />
+            </div>
+            <div className="pt-4">
+              <h2 className="text-3xl font-bold mb-4">
+                The <span className="gradient-text">acceleration</span> is real
+              </h2>
+              <p className="text-muted leading-relaxed mb-6">
+                Our AGI Advancement Index tracks the pace of AI capability progression
+                using data from benchmark performance, compute scaling, research velocity,
+                and real-world task automation breadth.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-danger text-sm mt-0.5">&#9679;</span>
+                  <p className="text-sm text-muted">
+                    <span className="text-foreground font-medium">47% of all worker tasks</span> could
+                    be completed faster with LLM-powered tools (OpenAI, 2024)
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-danger text-sm mt-0.5">&#9679;</span>
+                  <p className="text-sm text-muted">
+                    <span className="text-foreground font-medium">300 million jobs globally</span> exposed
+                    to automation by generative AI (Goldman Sachs, 2023)
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-danger text-sm mt-0.5">&#9679;</span>
+                  <p className="text-sm text-muted">
+                    <span className="text-foreground font-medium">92 million jobs displaced</span> by
+                    2030, only 78M net new created (WEF Future of Jobs, 2025)
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-danger text-sm mt-0.5">&#9679;</span>
+                  <p className="text-sm text-muted">
+                    <span className="text-foreground font-medium">27% of OECD jobs</span> at high risk
+                    of automation across G20 economies (OECD, 2023)
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="text-danger text-sm mt-0.5">&#9679;</span>
+                  <p className="text-sm text-muted">
+                    <span className="text-foreground font-medium">40% of global employment</span> exposed
+                    to AI, rising to 60% in advanced economies (IMF, 2024)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Data Credibility Section */}
+      <section className="py-20 px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">
               Powered by <span className="gradient-text">real data</span>
             </h2>
             <p className="text-muted max-w-lg mx-auto">
-              Our scoring model analyzes 12,900+ data points across 6 risk dimensions
-              for every occupation in the U.S. Department of Labor database.
+              Our scoring model synthesizes data from 12 institutional sources, 7 peer-reviewed
+              research papers, and 15,000+ data points to score every occupation in the
+              U.S. Department of Labor database.
             </p>
           </div>
 
           {/* Data points counter row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
             <div className="text-center p-5 bg-card rounded-xl border border-border">
               <div className="text-3xl font-bold text-accent">997</div>
               <div className="text-xs text-muted mt-1">Occupations Covered</div>
             </div>
             <div className="text-center p-5 bg-card rounded-xl border border-border">
-              <div className="text-3xl font-bold text-accent">12,961</div>
-              <div className="text-xs text-muted mt-1">Base Data Points</div>
+              <div className="text-3xl font-bold text-accent">15,000+</div>
+              <div className="text-xs text-muted mt-1">Data Points</div>
+            </div>
+            <div className="text-center p-5 bg-card rounded-xl border border-border">
+              <div className="text-3xl font-bold text-accent">12</div>
+              <div className="text-xs text-muted mt-1">Institutional Sources</div>
             </div>
             <div className="text-center p-5 bg-card rounded-xl border border-border">
               <div className="text-3xl font-bold text-accent">6</div>
               <div className="text-xs text-muted mt-1">Risk Dimensions</div>
             </div>
             <div className="text-center p-5 bg-card rounded-xl border border-border">
-              <div className="text-3xl font-bold text-accent">50+</div>
-              <div className="text-xs text-muted mt-1">Analysis Points Per Report</div>
+              <div className="text-3xl font-bold text-accent">55</div>
+              <div className="text-xs text-muted mt-1">Economies Analyzed</div>
             </div>
           </div>
 
